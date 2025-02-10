@@ -73,68 +73,47 @@ Após a criação do OAC, você está pronto para prosseguir para o próximo lab
    ![Perfil - Idioma](images/Perfil.png)
    ![Perfil - Idioma](images/Perfil2.png)
 
-8. (OPCIONAL) Após a importação você terá acesso ao dataset (Conjunto de Dados) **Brasil-Embarcações** e ao workbook que vamos fazer, se quiser dar uma olhada como ele vai ficar no final só entrar nele **Lab Analytics - Embarcações Brasil**. 
+8. Após a importação você terá acesso ao dataset (Conjunto de Dados) **Brasil-Embarcações** e ao workbook **Lab Analytics - Embarcações Brasil**, se quiser dar uma olhada como o painel vai ficar no final só entrar nele. 
    ![Homepage depois do import](images/Import4.png)
 
 ## 3️⃣ Criação do Dashboard - Visualizações
 
-1. Na Homepage do OAC, selecione o Menu de Hamburguer (Canto Superior Esquerdo), Selecione Dados e a Aba Conjunto de Dados (Dataset).
-![Homepage - Conjunto de Dados](images/Dataset.png)
+1. Na Homepage do OAC, selecione o Menu de Hamburguer (Canto Superior Esquerdo), Selecione Catálogo >> Minhas Pastas e selecione **Lab Analytics - Embarcações Brasil** (Workbook).
+![Homepage - Catálogo](images/Homepage_Catalog.png)
 
-2. Selcione **Brasil-Embarcações**. Irá abrir o workbook (Pasta de Trabalho), uma tele em branco para montar o Painel com análises e visualizações. 
-![Painel com Conjunto de Dados selecionado](images/Workbook2.png)
+2. Irá abrir o workbook (Pasta de Trabalho), uma tela com os paineis de dados com informações das Embarcações da Marinha Brasileira. No canto superior direito tem um lápis para abrir a aba de edição do Painel de Dados.  
+![Editar Workbook](images/EditarWorkbook.png)
 
-3. Na tela em branco do painel, selecione os dados da primeira coluna da esquerda, segurando o **_CTRL+Clique_  Quantidade, Latitude, Longitude**. Agora, **arraste** os itens selecionados **para a Tela** e como sugestão o OAC já sugere que a visualização seja um Mapa.
-![Visualização Mapa](images/Workbook3.png)
+3. Na aba **Visualizar**, você encontra os gráficos para serem editados com os DADOS disponíveis na primeira coluna (VERMELHO), a Gramática do Gráfico na segunda coluna - primeiro ícone (VERDE) e as Propriedades do gráfico, na segunda coluna - segundo ícone (AZUL). E a possibilidade de criar outros gráficos.
+![Aba Visualizar](images/TelaGeral.png)
 
-4. Dentro da Segunda Coluna, na gramática da visualização coloque o campo **QUANTIDADE** na caixa 'Tamanho'. E selecione o campo **ESTADO** e arraste ele ele dentro da caixa 'Cor'.
-![Visualização Mapa](images/Workbook4.png)
+4. Adiocione mais uma tela. No canto inferior em um símbolo de '+', ao lado da abas 'Geral', 'Ano a Ano', 'Autoinsight'. Clique nele para adicionar uma Tela.
+   ![Tela 4](images/Tela2.png) 
 
-5. (OPCIONAL) Altere a propriedade para personalizar o mapa. Na segunda coluna onde fica a gramática e a propriedade do gráfico, selecione o ícone superior de propriedades e vá até ícone de mapa na segunda linha. Altere a propriedade do Mapa, em cada ícone da segunda linha tem acesso a um tipo de personalização da visualização. 
-![Propriedades Visualização](images/Workbook5.png)
+<br>
 
-6. (OPCIONAL) Deixe no modo que achar mais agradável, para continuar vou deixar no modo Dark/Escuro do Mapa.
-![Propriedades Visualização](images/Workbook6.png)
+### **Estatística - Previsão (Forecast)**
+5. Segure **_CTRL+Clique_** nos campos **ANO e QUANTIDADE** na primeira coluna no primeiro ícone (Dados), e arraste os dois para a tela em branco. 
+   ![Previsão](images/Previsao0.png)
 
-7. Crie um gráfico de Barras. Selecione o campos desejados na coluna da esquerda onde fica os dados, segurando o _CTRL+Clique_  **Estado e Quantidade**. Agora, arraste os itens selecionados para a Tela, ao lado do Mapa, aparece uma faixa verde na posição onde a visualização vai ficar. 
-![Gráfico de Barra](images/Barra1.png)
+6. Verifique que é um gráfico de **Linha**.
+   ![Previsão](images/Previsao.png) 
 
-8. Para ordenar os dados do gráfico selecione o ícone com uma seta para cima e outra para baixo, como mostrado na imagem. E então selecione a forma que deseja ordenar os dados. 
-![Ordenar Dados](images/Ordenar1.png)
-![Ordenar Dados](images/Ordenar2.png)
-![Ordenar Dados](images/Ordenar3.png)
+7. Selecione a visualização que deseja adiconar estatística. Clique com o _botão direito_, selecione **Adionar Estatísticas**. E escolha a opção **Previsão**.
+   ![Previsão](images/Previsao2.png) 
+   ![Previsão](images/Previsao3.png) 
+   ![Previsão](images/Previsao4.png) 
 
-9. Salve seu trabalho até agora. Selecione o ícone do disquete no campo direito superior. Dê um nome para o seu Painel e salve. 
-![Salvar Painel](images/Save.png)
+8. Alterar o tipo de Visualização, selecione na Gramática do Gráfico (Segunda Coluna) o ícone to tipo de gráfico, irá expandir e mostrar todas as possibilidades de visualização com os dados que estão disponíveis no gráfico. Observação: Para ver todos os tipos de visualizações  
+   ![Alterar Visualização](images/AlterarViz.png) 
+   ![Alterar Visualização](images/AlterarViz2.png) 
 
-## 4️⃣ Adição de Estatística nas Visualizações
+9.  (OPCIONAL) Personalizar a propriedade do gráfico, deixando o valor e o ponto no gráfico visível. 
+   ![Propriedades da Visualização](images/Prop1.png) 
+   ![Propriedades da Visualização](images/Prop2.png) 
 
-1. Adicione estatísticas como: _Previsão, Linha de Tendência, Linha de Referência, Outliers ou Cluster_. 
-<br> Selecione a visualização que deseja adiconar estatística. Clique com o _botão direito_, selecione **Adionar Estatísticas**. E escolha a opção **Outliers**, trará os pontos que destoam do grupo. 
-   ![Estatística - Outliers](images/Outliers.png)
-   ![Estatística - Outliers](images/Outliers2.png)
 
-2. Deixe uma visualização mais personalizada, adicionando um filtro para trazer os _**10 maiores valores**_. Na segunda coluna, selecione o ícone da Gramática da Visualização.
-   ![Filtro na Visualização](images/Filtro.png)
-
-3. Selecione o dado **Quantidade** na primeira coluna e traga para segunda coluna, na gramática do painel para adionar **Quantidade** em **Filtros**. 
-<br> Personalize o filtro, definindo _N Mais Altos_ e Contragem _10_. 
-
-   ![Filtro na Visualização](images/Filtro1.png)
-
-4. Ao adicionar mais algumas métricas de estatística, como Linha de Referência. 
-<br> Selecione a visualização desejada. Clique com o _botão direito_, selecione **Adionar Estatísticas**. E escolha a opção **Linha de Referência**. Deixe na Função Média. 
-
-   ![Linha de Referência](images/Referencia1.png)
-   ![Linha de Referência](images/Referencia2.png)
-
-5. Repita o passo anterior. 
-<br> Selecione a visualização desejada. Clique com o _botão direito_, selecione **Adionar Estatísticas**. E escolha a opção **Linha de Referência**. Deixe na Função Mediana, alterando a cor da linha para ficar diferente.   
-
-   ![Linha de Referência](images/Referencia3.png)
-   ![Linha de Referência](images/Referencia4.png)
-
-## 5️⃣ One-Click Explain & Autoinsights
+## 4️⃣ One-Click Explain & Autoinsights
 1. Adicione mais uma tela. No canto inferior tem um símbolo de '+', ao lado da aba 'Tela 1' ou 'Geral'. Clique nele para adicionar uma segunda Tela.
    ![Tela 2](images/Tela2.png) 
 
@@ -184,32 +163,15 @@ Após a criação do OAC, você está pronto para prosseguir para o próximo lab
 14. Navegue pelo Painel pronto que foi importado na primeira tarefa. O Workbook (Pasta de Trabalho) **Lab Analytics - Embarcações Brasil**. 
    ![Homepage depois do import](images/Import4.png)
 
-
 <br>
 
 🎉🎉 Parabéns, você terminou os Laboratórios de **OAC - Oracle Analytics Cloud com sucesso!!** 🎉🎉
 
 <br>
 
-## 6️⃣ [EXTRA] Adição de Previsão, Campo Calculado, Filtros e Personalização do Dashboard
 
-1. Adiocione mais uma tela. No canto inferior em um símbolo de '+', ao lado da aba 'Tela 1' ou 'Geral'. Clique nele para adicionar uma segunda Tela.
-   ![Tela 4](images/Tela2.png) 
+## 5️⃣ [EXTRA] Adição de Previsão, Campo Calculado, Filtros e Personalização do Dashboard
 
-<br>
-
-### **Estatística - Previsão (Forecast)**
-2. Segure **_CTRL+Clique_** nos campos **ANO e QUANTIDADE** na primeira coluna no primeiro ícone (Dados), e arraste os dois para a tela em branco. Verifique que é um gráfico de **Linha**.
-   ![Previsão](images/Previsao.png) 
-
-3. Selecione a visualização que deseja adiconar estatística. Clique com o _botão direito_, selecione **Adionar Estatísticas**. E escolha a opção **Previsão**.
-   ![Previsão](images/Previsao2.png) 
-   ![Previsão](images/Previsao3.png) 
-   ![Previsão](images/Previsao4.png) 
-
-4. (OPCIONAL) Personalizar a propriedade do gráfico, deixando o valor e o ponto no gráfico visível. 
-   ![Propriedades da Visualização](images/Prop1.png) 
-   ![Propriedades da Visualização](images/Prop2.png) 
 
 5. Outra forma de analisar a mudança períodica da quantidade de embarcações, é pelo gráfico de . Por isso, segure _CTRL+Clique_ nos campos **ANO e QUANTIDADE** na primeira coluna no primeiro ícone (Dados), e arraste os dois para a tela ao lado do gráfico de linha. 
    ![Cascata](images/Cascata.png) 
@@ -310,6 +272,73 @@ Selecione os campos desejados **Embarção e Quantidade**. _Clique com o botão 
 🎉🎉 Parabéns, você terminou os Laboratórios e Material EXTRA de **OAC - Oracle Analytics Cloud com sucesso!!** 🎉🎉
 
 <br>
+
+
+## 6️⃣ [EXTRA - OPICIONAL] Passos para criar as primeiras visualizações
+
+1. Na Homepage do OAC, selecione o Menu de Hamburguer (Canto Superior Esquerdo), Selecione Dados e a Aba Conjunto de Dados (Dataset).
+![Homepage - Conjunto de Dados](images/Dataset.png)
+
+2. Selcione **Brasil-Embarcações**. Irá abrir o workbook (Pasta de Trabalho), uma tele em branco para montar o Painel com análises e visualizações. 
+![Painel com Conjunto de Dados selecionado](images/Workbook2.png)
+
+3. Na tela em branco do painel, selecione os dados da primeira coluna da esquerda, segurando o **_CTRL+Clique_  Quantidade, Latitude, Longitude**. Agora, **arraste** os itens selecionados **para a Tela** e como sugestão o OAC já sugere que a visualização seja um Mapa.
+![Visualização Mapa](images/Workbook3.png)
+
+4. Dentro da Segunda Coluna, na gramática da visualização coloque o campo **QUANTIDADE** na caixa 'Tamanho'. E selecione o campo **ESTADO** e arraste ele ele dentro da caixa 'Cor'.
+![Visualização Mapa](images/Workbook4.png)
+
+5. (OPCIONAL) Altere a propriedade para personalizar o mapa. Na segunda coluna onde fica a gramática e a propriedade do gráfico, selecione o ícone superior de propriedades e vá até ícone de mapa na segunda linha. Altere a propriedade do Mapa, em cada ícone da segunda linha tem acesso a um tipo de personalização da visualização. 
+![Propriedades Visualização](images/Workbook5.png)
+
+6. (OPCIONAL) Deixe no modo que achar mais agradável, para continuar vou deixar no modo Dark/Escuro do Mapa.
+![Propriedades Visualização](images/Workbook6.png)
+
+7. Crie um gráfico de Barras. Selecione o campos desejados na coluna da esquerda onde fica os dados, segurando o _CTRL+Clique_  **Estado e Quantidade**. Agora, arraste os itens selecionados para a Tela, ao lado do Mapa, aparece uma faixa verde na posição onde a visualização vai ficar. 
+![Gráfico de Barra](images/Barra1.png)
+
+8. Para ordenar os dados do gráfico selecione o ícone com uma seta para cima e outra para baixo, como mostrado na imagem. E então selecione a forma que deseja ordenar os dados. 
+![Ordenar Dados](images/Ordenar1.png)
+![Ordenar Dados](images/Ordenar2.png)
+![Ordenar Dados](images/Ordenar3.png)
+
+9. Salve seu trabalho até agora. Selecione o ícone do disquete no campo direito superior. Dê um nome para o seu Painel e salve. 
+![Salvar Painel](images/Save.png)
+
+### **Adição de Estatística nas Visualizações** 
+
+10. Adicione estatísticas como: _Previsão, Linha de Tendência, Linha de Referência, Outliers ou Cluster_. 
+<br> Selecione a visualização que deseja adiconar estatística. Clique com o _botão direito_, selecione **Adionar Estatísticas**. E escolha a opção **Outliers**, trará os pontos que destoam do grupo. 
+   ![Estatística - Outliers](images/Outliers.png)
+   ![Estatística - Outliers](images/Outliers2.png)
+
+11. Deixe uma visualização mais personalizada, adicionando um filtro para trazer os _**10 maiores valores**_. Na segunda coluna, selecione o ícone da Gramática da Visualização.
+   ![Filtro na Visualização](images/Filtro.png)
+
+12. Selecione o dado **Quantidade** na primeira coluna e traga para segunda coluna, na gramática do painel para adionar **Quantidade** em **Filtros**. 
+<br> Personalize o filtro, definindo _N Mais Altos_ e Contragem _10_. 
+
+   ![Filtro na Visualização](images/Filtro1.png)
+
+13. Ao adicionar mais algumas métricas de estatística, como Linha de Referência. 
+<br> Selecione a visualização desejada. Clique com o _botão direito_, selecione **Adionar Estatísticas**. E escolha a opção **Linha de Referência**. Deixe na Função Média. 
+
+   ![Linha de Referência](images/Referencia1.png)
+   ![Linha de Referência](images/Referencia2.png)
+
+14. Repita o passo anterior. 
+<br> Selecione a visualização desejada. Clique com o _botão direito_, selecione **Adionar Estatísticas**. E escolha a opção **Linha de Referência**. Deixe na Função Mediana, alterando a cor da linha para ficar diferente.   
+
+   ![Linha de Referência](images/Referencia3.png)
+   ![Linha de Referência](images/Referencia4.png)
+
+
+<br>
+
+🎉🎉 Parabéns, você terminou os Laboratórios e Material EXTRA de **OAC - Oracle Analytics Cloud com sucesso!!** 🎉🎉
+
+<br>
+
 
 ## 👥 Agradecimentos
 
