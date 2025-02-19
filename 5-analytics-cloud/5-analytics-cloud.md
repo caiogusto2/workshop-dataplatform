@@ -1,5 +1,18 @@
 # Oracle Analytics Cloud
 
+## Oracle Analytics Cloud
+
+A seguir o passo a passo do laboratório.
+### **Recursos e Suporte**:
+
+- **Download do .dva**: [Painel das Embarcações Brasileiras](https://objectstorage.us-ashburn-1.oraclecloud.com/n/idi1o0a010nx/b/Fast_Track/o/Lab%20Analytics%20-%20Embarca%C3%A7%C3%B5es%20Brasil.dva)
+- **Documentação da Oracle Cloud**: [Getting started with Oracle Analytics Cloud](https://docs.oracle.com/en/cloud/paas/analytics-cloud/index.html)
+- **Tutoriais**: [Oracle Analytics Cloud - Explore Funcionalidades com Tutoriais](https://docs.oracle.com/en/cloud/paas/analytics-cloud/tutorials.html)
+
+### _**Aproveite sua experiência na Oracle Cloud!**_
+
+
+
 ## Introdução
 
 >**O Oracle Analytics Cloud - OAC aprimora as análises dos seus dados através das funcionalidades estatísticas e IA, com sugestões de visualizações que enriquecem o seu Painel Analítico.** 
@@ -12,13 +25,6 @@ A filosofia da solução gira ao redor dos conceitos de Augmented Analytics, tem
 ### **Objetivos**
 
 O objetivo deste workshop é demonstrar de forma prática como utilizar a ferramenta do Oracle Analytics Cloud e algumas funcionalidade de AI&ML embarcadas no OAC. Durante o workshop, você aprenderá a criar visualizações, adicionar estatísticas nas análises em um cenário que dados abertos da Marinha Brasileira (https://dados.gov.br/dados/conjuntos-dados/embarcacoes).
-
-<br>
-### **Recursos e Suporte**:
-
-- **Documentação da Oracle Cloud**: [Getting started with Oracle Analytics Cloud](https://docs.oracle.com/en/cloud/paas/analytics-cloud/index.html)
-- **Tutoriais**: [Oracle Analytics Cloud - Explore Funcionalidades com Tutoriais](https://docs.oracle.com/en/cloud/paas/analytics-cloud/tutorials.html)
-
 
 ### _**Aproveite sua experiência na Oracle Cloud!**_
 
