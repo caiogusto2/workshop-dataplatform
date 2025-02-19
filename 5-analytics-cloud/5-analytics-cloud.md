@@ -1,6 +1,6 @@
 # Oracle Analytics Cloud
 
-## Oracle Analytics Cloud
+
 
 A seguir o passo a passo do laboratório.
 ### **Recursos e Suporte**:
