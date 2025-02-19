@@ -13,7 +13,7 @@ A seguir o passo a passo do laboratório.
 
 
 
-## Introdução
+## 📌 Introdução
 
 >**O Oracle Analytics Cloud - OAC aprimora as análises dos seus dados através das funcionalidades estatísticas e IA, com sugestões de visualizações que enriquecem o seu Painel Analítico.** 
 
