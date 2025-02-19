@@ -18,14 +18,13 @@ A seguir o passo a passo do laboratório.
 O OAC complementa a plataforma de Self-Service Analytics e conta com o motor de Business Intelligence proveniente do OBIEE, que permite construção de Modelos Dimensionais, Hierarquias e outras estruturas que otimizam o consumo dos dados, em Relatórios e Dashboards.
 
 A filosofia da solução gira ao redor dos conceitos de Augmented Analytics, tema muito recorrente em análises de companhias especializadas, como o Gartner. Ele se resume em enriquecer as análises com conceitos de Inteligência Artificial e Machine Learning, dando acesso a abordagens estatísticas avançadas para qualquer perfil de usuário e não apenas aos que possuem vasto conhecimento sobre o tema. Nossa solução é classificada como **‘Líder’ no Quadrante Mágico do Gartner**, principal referência para avaliação e comparação de tecnologias hoje em dia.
-
 <br>
 ### **Objetivos**
 
 O objetivo deste workshop é demonstrar de forma prática como utilizar a ferramenta do Oracle Analytics Cloud e algumas funcionalidade de AI&ML embarcadas no OAC. Durante o workshop, você aprenderá a criar visualizações, adicionar estatísticas nas análises em um cenário que dados abertos da Marinha Brasileira (https://dados.gov.br/dados/conjuntos-dados/embarcacoes).
 
 ### _**Aproveite sua experiência na Oracle Cloud!**_
-
+<br>
 
 ## 1️⃣ Criação do Oracle Analytics Cloud
 
