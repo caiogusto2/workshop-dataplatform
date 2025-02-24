@@ -1,5 +1,24 @@
 # Oracle Generative AI Agents
 
+## 🎯 **Objetivos**
+
+Descubrir como utilizar de forma prática a funcionalidade de busca vetorial do Oracle Generative AI Agents para otimizar consultas em documentos no formato PDF.
+
+O que você aprenderá:
+
+- Criar buckets no Object Storage e realizar o upload de documentos PDF.
+- Configurar e utilizar o serviço OCI Generative AI Agent para criar bases de conhecimento e agentes conversacionais.
+- Explorar como implementar a funcionalidade de Retrieval-Augmented Generation (RAG) para consultar documentos personalizados com eficiência e contexto.
+
+>### ⚠️ **ATENÇÃO**:
+>
+>Antes de continuar, realize o download dos arquivos abaixo.
+><br>
+><br>
+>- **Download dos PDFs**: Qualquer PDF pode ser utilizado, mas, para fins didáticos deste workshop utilizaremos como nosso exemplo o guia de [Normas Ambientais da Marinha](https://www.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-401.pdf)
+
+### _**Aproveite sua experiência na Oracle Cloud!**_
+
 ## 📌 Introdução
 
 >**O OCI Generative AI Agents é um serviço avançado que combina o poder dos grandes modelos de linguagem (LLMs) com técnicas de recuperação inteligente, permitindo que organizações desenvolvam agentes virtuais capazes de fornecer respostas contextuais e precisas ao consultar suas bases de conhecimento.** 
@@ -26,52 +45,40 @@ O serviço transforma a forma como os agentes interagem ao:
 - **Garantir atualizações contínuas:** Bases de conhecimento podem ser atualizadas sem interromper o funcionamento do agente.  
 - **Oferecer escalabilidade e segurança:** Arquitetura robusta que suporta cargas crescentes sem comprometer a integridade dos dados.
 
-<br>
-
-### 📌 **Objetivos**
-
-Descubrir como utilizar de forma prática a funcionalidade de busca vetorial do Oracle Generative AI Agents para otimizar consultas em documentos no formato PDF.
-
-O que você aprenderá:
-
-- Criar buckets no Object Storage e realizar o upload de documentos PDF.
-- Configurar e utilizar o serviço OCI Generative AI Agent para criar bases de conhecimento e agentes conversacionais.
-- Explorar como implementar a funcionalidade de Retrieval-Augmented Generation (RAG) para consultar documentos personalizados com eficiência e contexto.
-
-<br>
 ### **Recursos e Suporte**:
-
-- **Download dos PDFs**: Neste laboratório utilizaremos dois documentos:
-     - [Normas Internas Dataprev](https://www.dataprev.gov.br/governanca/normativos/normasinternas): Para o nosso exemplo, utilizaremos o arquivo **Viagem a Serviço Nacional**.
-     - [Revista Dataprev Resultados nº 16](https://www.dataprev.gov.br/acompanhe-dataprev-publicacoes/revista-dataprev-resultados): Para o nosso exemplo, utilizaremos o arquivo **Revista Dataprev Resultados nº 16**.
 
 - **Documentação da Oracle Cloud**: [Generative AI Agents](https://docs.oracle.com/pt-br/iaas/Content/generative-ai-agents/home.htm)
 - **Tutoriais**: [Deploy an ODA Chatbot powered by Generative AI Agents](https://apexapps.oracle.com/pls/apex/f?p=133:180:2908048658105::::wid:4022)
 
+## 1️⃣ Validação de Região
 
-### _**Aproveite sua experiência na Oracle Cloud!**_
+Faça o login no Oracle Cloud Infrastructure (OCI) e valide se a região de Chicago se encontra disponível para uso.
 
+   ![Validate Region](images/validate-region.png " ")
 
-## 1️⃣ Criação de Bucket no Object Storage e Upload de PDF
+## 2️⃣ Criação de Bucket no Object Storage e Upload de PDF
 
-> **ATENÇÃO: Certifique-se de estar na região US Midwest (Chicago)**
-
-Na guia do navegador com o OCI aberto, clique no menu de hambúrguer localizado no canto superior esquerdo da tela. Em seguida, selecione **Storage** e depois **Buckets**.
+Na página inicial da Oracle Cloud, clique no menu **(☰)** e selecione **Storage ⮕ Buckets**.
 
 ![Buckets](images/buckets.png)
 
+Na região esquerda de sua tela, verifique se está no compartimento **root**. Faça a criação do serviço **somente** neste compartimento.
 
-Clique em **Create Buckets**. Em seguida, insira um nome para o seu bucket. Recomendamos o nome **ai-agent-buckets**. Finalize clicando em **Create**.
+> **ATENÇÃO**: Antes de continuar verifique se está no compartimento **ROOT** conforme indicado abaixo.
+
+![Compartment Root](images/compartment-root.png)
+
+
+Clique em **Create Buckets**. Em seguida, insira um nome para o seu bucket. Recomendamos o nome **ai-agent-fast-track**. Finalize clicando em **Create**.
 
 ![Create Buckets](images/create-buckets.png)
-
 ![Name bucket](images/name-bucket.png)
 
 Após a criação do bucket, clique em seu nome para acessá-lo. Em seguida, clique em **Upload**, selecione os arquivos PDFs desejados do seu computador, **clique e arraste para a região delimitada** e finalize clicando em **Upload** na parte inferior da tela.
 
-Neste laboratório utilizaremos dois documentos:
-- [Normas Internas Dataprev](https://www.dataprev.gov.br/governanca/normativos/normasinternas): Para o nosso exemplo, utilizaremos o arquivo **Viagem a Serviço Nacional**.
-- [Revista Dataprev Resultados nº 16](https://www.dataprev.gov.br/acompanhe-dataprev-publicacoes/revista-dataprev-resultados): Para o nosso exemplo, utilizaremos o arquivo **Revista Dataprev Resultados nº 16**.
+Qualquer PDF com texto selecionável pode ser utilizado, mas, para fins didáticos deste workshop utilizaremos como nosso exemplo o guia de [Normas Ambientais da Marinha](https://www.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-401.pdf)
+
+> **ATENÇÃO:** Caso já tenha sido realizado o download no início do tutorial, não é necessário realizar novamente.
 
 ![Upload PDF](images/upload-pdf.png)
 
@@ -80,9 +87,9 @@ Aguarde a conclusão do processo. Em seguida, clique em **Close**. O arquivo dev
 ![Close](images/close.png)
 ![Bucket PDF](images/bucket-pdf.png)
 
-## 2️⃣ Criação da Base de Conhecimento (Knowledge Base)
+## 3️⃣ Criação da Base de Conhecimento (Knowledge Base)
 
-Clique no menu de hambúrguer localizado no canto superior esquerdo da tela. Em seguida, selecione Analytics & AI e depois Generative AI Agents.
+clique no menu **(☰)** e selecione **Analytics & AI  ⮕ Generative AI Agents**.
 
 ![Menu Agents](images/menu-agents.png)
 
@@ -90,20 +97,27 @@ Na página inicial do serviço, no menu à esquerda, selecione a opção **Knowl
 
 ![Knowledge Menu](images/knowledge-menu.png)
 
+Na região esquerda de sua tela, verifique se está no compartimento **root**. Faça a criação do serviço **somente** neste compartimento.
+
+> **ATENÇÃO**: Antes de continuar verifique se está no compartimento **ROOT** conforme indicado abaixo.
+
+![Compartment Root](images/compartment-root.png)
+
 Selecione **Create Knowledge Base**, conforme indicado abaixo.
 
 ![Create Knowledge](images/create-knowledge.png)
 
 Nesta tela, siga os passos abaixo:  
 1. Insira o nome da sua base de conhecimento. Recomendamos utilizar **knowledge-base-agent**.  
-2. No campo **Data Source Type**, selecione a opção **Object Storage**.  
-3. Selecione a opção **Enable Hybrid Search**, que combina pesquisa semântica (busca baseada no significado e contexto) e pesquisa lexical (busca por correspondência exata de termos), garantindo resultados mais precisos e relevantes.
-4. Clique em **Specify Data Source** para configurar os arquivos que serão utilizados pelo Agent.  
+2. Compartment: ```<nome-tenancy>(root)```
+3. No campo **Data Source Type**, selecione a opção **Object Storage**.  
+4. Selecione a opção **Enable Hybrid Search**, que combina pesquisa semântica (busca baseada no significado e contexto) e pesquisa lexical (busca por correspondência exata de termos), garantindo resultados mais precisos e relevantes.
+5. Clique em **Specify Data Source** para configurar os arquivos que serão utilizados pelo Agent.  
 
 ![Informations Knowledge](images/informations-knowledge.png)
 
 Na tela seguinte, siga os passos abaixo:
-1.  Insira o nome da sua fonte de dados. Recomendamos utilizar **pdfs-dataprev**
+1.  Insira o nome da sua fonte de dados. Recomendamos utilizar **pdfs-marinha**
 2.  Marque a opção **Enable Multi-Modal Parsing** para permitir a interpretação de gráficos, tabelas e outros elementos visuais dos documentos.
 3.  Em Select bucket, escolha o bucket previamente criado (neste exemplo, bucket-ai-agent).
 4.  Marque a caixa ao lado de **Object prefixes** para selecionar os arquivos que serão utilizados. Você poderá escolher entre 1 ou mais arquivos.
@@ -121,7 +135,7 @@ O status da base de conhecimento aparecerá como **Creating** até que o process
 
 ![Sucess Messages](images/sucess-messages.png)
 
-## 3️⃣ Criação do Agente de IA
+## 4️⃣ Criação do Agente de IA
 
 No menu à esquerda, selecione a opção **Agents**. Em seguida, clique em **Create Agent**
 
@@ -129,14 +143,15 @@ No menu à esquerda, selecione a opção **Agents**. Em seguida, clique em **Cre
 
 Nesta tela, siga os seguintes passos:
 1. Insira o nome do agente. Recomendamos o nome **ai-agent**.
-2. No campo **Welcome Message**, insira a mensagem de boas-vindas que será exibida para o usuário ao iniciar a interação com o agente. Exemplo: 
-> **"Olá! Sou seu assistente virtual para documentos. Como posso ajudar você hoje?"**
+2. Na seção **Add Knowledge Bases**, selecione a base de conhecimento que será vinculada ao agente chamada **knowledge-base-agent**
+> **ATENÇÃO:** Certifique-se de que a base de conhecimento está ativa. **O Lifecycle State deve aparecer como Active.**
 
-3. No campo **Instructions for RAG Generation**, adicione instruções específicas para o agente. No exemplo, foi utilizado:  
-> **"Você é um assistente virtual especialista em leitura de documentos. Responda sempre de forma clara e exclusivamente em português brasileiro."**
+3. **Pule o campo descrição.**
+4. No campo **Welcome Message**, insira a mensagem de boas-vindas que será exibida para o usuário ao iniciar a interação com o agente. Exemplo: 
+> **Olá! Sou seu assistente virtual para documentos. Como posso ajudar você hoje?**
 
-4. Na seção **Add Knowledge Bases**, selecione a base de conhecimento que será vinculada ao agente. Certifique-se de que a base de conhecimento está ativa. **O Lifecycle State deve aparecer como Active.**
-
+5. No campo **Instructions for RAG Generation**, adicione instruções específicas para o agente. No exemplo, foi utilizado:  
+> **Você é um assistente virtual especialista em leitura de documentos. Responda sempre de forma clara e exclusivamente em português brasileiro.**
 
 ![Configuration Agents](images/configuration-agents.png)
 
@@ -146,14 +161,13 @@ Clique no botão **Create** para finalizar a criação do agente.
 
 ![Create Agent](images/create-agent.png)
 
-
-Nesta tela, aceite o Acordo de Licença e Política de Uso do Llama 3, o modelo de inteligência artificial utilizado pelo Agent.
+Nesta tela, aceite o **Acordo de Licença e Política de Uso do Llama 3**, o modelo de inteligência artificial utilizado pelo Agent.
 
 ![LLAMA3](images/llama3.png)
 
 No canto superior direito, verifique as mensagens de confirmação. Elas devem indicar que a criação do agente  e do endpoint foram concluídas com sucesso.
 
-O campo **Lifecycle State** exibirá o status como **Creating**, com média de tempo  de **3-5 minutos** para finalização. Aguarde até que o status mude para **Active**, indicando que o agente está pronto para uso.
+O campo **Lifecycle State** exibirá o status como **Creating**, com média de tempo  de **5-10 minutos** para finalização. Aguarde até que o status mude para **Active**, indicando que o agente está pronto para uso.
 
 ![Sucess Messages Agent](images/sucess-messages-agent.png)
 
@@ -164,47 +178,34 @@ Clique no nome do agente e, em seguida, selecione a opção **Launch Chat** para
 > **ATENÇÃO: Caso o agente esteja ativo e o botão não esteja disponível, acesse o menu à esquerda inferior e selecione Endpoints. Verifique se o Lifecycle State do endpoint está como Active. Se o status estiver como Creating, aguarde a finalização e atualize a página.**
 ![Endpoints](images/endpoints.png)
 
-## 4️⃣ Interface de Interação com o Assistente Virtual
+## 5️⃣ Interface de Interação com o Assistente Virtual
 
-### **Agente e Endpoint (destacado em azul)**
+### Agente e Endpoint (azul)
+- **Agente:** Selecione o agente configurado (ex: **ai-agent**).
+- **Agent Endpoint:** Ponto de acesso para conectar o assistente às bases de conhecimento.
 
-> - **Agent:** Neste campo você seleciona o agente configurado para responder às suas perguntas. No exemplo, o agente selecionado é o **ai-agent**.
-> <br>
-> - **Agent Endpoint:** O endpoint associado ao agente. Este é o ponto de acesso que conecta o assistente às bases de conhecimento.
+### Área de Chat (vermelho)
+- Espaço principal para interação, com mensagens de saudação e respostas.
+- **Type a message...:** Digite sua pergunta e clique em **Submit**.
+- **Reset chat session:** Reinicia a sessão, apagando o histórico.
 
-### **Área de Chat (destacada em vermelho)**
-
-Esta é a área principal onde você pode interagir com o agente. Aqui, o assistente exibe a mensagem de saudação que configuramos e as respostas às suas perguntas.
-
-> -  O campo **Type a message...** é onde você insere suas perguntas. Após digitar, clique em **Submit** para enviar a mensagem.
-> -  O botão **Reset chat session** permite reiniciar a sessão de chat, apagando o histórico atual de interação.
-
-### **Traces (destacado em laranja)**
-
-> O painel Traces mostra detalhes técnicos de cada interação com o agente, como as **consultas realizadas, os resultados gerados e os detalhes da página e parágrafo cujas informações foram obtidas**. Este recurso é útil para analisar como o assistente processa as perguntas e recupera informações da base de conhecimento.
+### Traces (destacado em laranja)
+- Exibe os detalhes técnicos de cada interação com o agente, incluindo as consultas realizadas, os resultados retornados e a origem das informações (página e parágrafo).
 
 ![Interface Agent](images/interface-agent.png)
 
-Na imagem abaixo, você pode observar o funcionamento do assistente virtual ao responder perguntas baseadas em diferentes documentos previamente carregados na base de conhecimento.
-
-1. A pergunta **"O que é o Programa de Qualificação de Dados e Benefícios?"** foi realizada com base em um documento específico presente na base de conhecimento.
-2. Outra pergunta foi realizada: **"Quais situações podem gerar reembolso na viagem a serviço nacional?"**, utilizando informações de um documento diferente da mesma base de conhecimento.
+Na imagem abaixo, você pode observar o funcionamento do assistente virtual ao responder perguntas baseadas no documento previamente carregado na base de conhecimento.
 
 Exemplos de perguntas para os documentos utilizados:
 
-> ### **Revista Dataprev**
-> 1. Qual é o objetivo principal da Dataprev nos seus 50 anos de atuação?
-> 2. O que é a Infraestrutura Nacional de Dados (IND)?
-> 3. Quais foram os avanços tecnológicos destacados pela Dataprev?
-> 4. Como a Dataprev contribui para a soberania digital do Brasil?
-> ### **Normas internas**
-> 1. Quem está sujeito à aplicação da norma de Viagem a Serviço Nacional?
-> 2. O que é o adicional de deslocamento de embarque e desembarque?
-> 3. Quais tipos de alteração de viagem são previstos?
-> 4. O que é a Proposta de Concessão de Diárias e Passagens (PCDP)?
-> 5. Qual o prazo para prestação de contas após a viagem?
-> 6. Quais são os valores estabelecidos para diárias e deslocamentos?
-
+> ### **NORMAS DA AUTORIDADE MARÍTIMA PARA A PREVENÇÃO DA POLUIÇÃO AMBIENTAL CAUSADA POR EMBARCAÇÕES E PLATAFORMAS**
+> 1. Quais são os níveis de impacto ambiental considerados na valoração de multas administrativas por poluição hídrica?
+> 2. O que acontece se um navio derramar óleo no mar?
+> 3. O que um navio precisa fazer para cuidar da água de lastro?
+> 4. Como o governo decide o valor da multa para poluição da água?
+> 5. Se um navio precisar jogar água de lastro no mar, existem lugares proibidos?
+> 6. Se um navio for multado, ele pode recorrer?
+> 7. Quanto tempo o dono do navio tem para pagar a multa?
 
 ![Questions](images/questions-agent.png)
 
@@ -212,7 +213,7 @@ Ao clicar em **View Citations**, você expande as referências utilizadas pelo a
 
 Cada citação apresenta as seguintes informações:
 
-> - **Title:** O nome do arquivo PDF de onde a informação foi extraída (neste exemplo, revistadataprevresultados16_web_2_2.pdf).
+> - **Title:** O nome do arquivo PDF de onde a informação foi extraída (neste exemplo, norman-401.pdf).
 > - **Object storage path:** O caminho do arquivo no armazenamento do OCI.
 > - **Document ID:** Um identificador único do documento.
 > - **Page numbers:** Indica o número da página no documento de onde a informação foi retirada.
@@ -221,11 +222,11 @@ Cada citação apresenta as seguintes informações:
 ![Citations](images/citations.png)
 
 
-Laboratório finalizado! Parabéns por concluir todas as etapas. Fique à vontade para criar novas perguntas, explorar a sua aplicação e descobrir ainda mais possibilidades com o seu assistente virtual.
+**Laboratório finalizado!** Parabéns por concluir todas as etapas. Fique à vontade para criar novas perguntas, explorar a sua aplicação e descobrir ainda mais possibilidades com o seu assistente virtual.
 
 Você poderá seguir para o próximo laboratório.
 
-## 5️⃣ [EXTRA] Embeddings com OCI Generative AI
+## 6️⃣ [EXTRA] Embeddings com OCI Generative AI
 
 ### ❓**O que são Embeddings?**
 > Embeddings são representações vetoriais de objetos, como textos ou imagens. **Ao transformar objetos em vetores, conseguimos realizar operações matemáticas que permitem comparar, analisar e calcular a similaridade entre eles.** Isso possibilita, por exemplo, identificar semelhanças entre textos ou buscar informações relevantes de forma eficaz.
