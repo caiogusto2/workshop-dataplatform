@@ -1,5 +1,25 @@
 # Oracle 23ai Vector Search
 
+## 🎯 **Objetivos**
+
+Demonstrar de forma prática como utilizar a funcionalidade de busca vetorial do Oracle 23c AI Vector Search.
+
+O que você aprenderá:
+
+- Criar e configurar um banco de dados autônomo (Autonomous Database) no Oracle Cloud Infrastructure (OCI).
+- Utilizar a funcionalidade de busca vetorial para otimizar consultas e análises em PDFs.
+- Explorar as vantagens do Oracle 23c AI na integração de dados relacionais e semânticos.
+
+>### ⚠️ **ATENÇÃO**:
+>
+>Antes de continuar, realize o download dos arquivos abaixo.
+><br>
+><br>
+>- **Download dos PDFs**: Qualquer PDF pode ser utilizado, mas, para fins didáticos deste workshop utilizaremos como nosso exemplo o guia de [Normas Ambientais da Marinha](https://www.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-401.pdf)
+>- **Download da Aplicação**: [Aplicação APEX](https://objectstorage.us-ashburn-1.oraclecloud.com/p/giVj_Pu_1DNcojoKoLWZnEbL2oqQANGFCEGCuIE8Mm1hRaXCMhUkkKdu4xqi9CjB/n/idi1o0a010nx/b/bucket-prodesp/o/f102.sql)
+
+### _**Aproveite sua experiência na Oracle Cloud!**_
+
 ## 📌 Introdução
 
 >**Com o Oracle 23c AI, o AI Vector Search integra vetores ao Oracle Database, eliminando bancos especializados e evitando a fragmentação de dados. Essa tecnologia permite buscas por similaridade combinadas com SQL simples, potencializando modelos de linguagem (LLMs) com contexto adicional. Inclui novo tipo de dado vetorial, índices específicos e extensões SQL para análises avançadas diretamente no banco de dados.** 
@@ -27,22 +47,8 @@ Referência: [Announcing Oracle Database 23ai : General Availability
 
 <br>
 
-### 📌 **Objetivos**
-
-Demonstrar de forma prática como utilizar a funcionalidade de busca vetorial do Oracle 23c AI Vector Search.
-
-O que você aprenderá:
-
-- Criar e configurar um banco de dados autônomo (Autonomous Database) no Oracle Cloud Infrastructure (OCI).
-- Utilizar a funcionalidade de busca vetorial para otimizar consultas e análises.
-- Explorar as vantagens do Oracle 23c AI na integração de dados relacionais e semânticos.
-
-<br>
 ### **Recursos e Suporte**:
 
-- **Download dos PDFs**: Neste laboratório utilizaremos um documento:
-     - [Normas Internas Dataprev](https://www.dataprev.gov.br/governanca/normativos/normasinternas): Para o nosso exemplo, utilizaremos o arquivo **Viagem a Serviço Nacional**.
-- **Download da Aplicação**: [f102.sql](https://objectstorage.us-ashburn-1.oraclecloud.com/p/XescapnJvbIn2SQTE9akiaJYethoa9t_4glIsMZa4mjI0VJrUdL2MvzqJmsJmF1C/n/idi1o0a010nx/b/bucket-prodesp/o/f102.sql)
 - **Documentação da Oracle Cloud**: [Getting started with vectors in 23ai](https://blogs.oracle.com/coretec/post/getting-started-with-vectors-in-23ai)
 - **Tutoriais**: [Oracle Database 23ai - Oracle AI Vector Search & Retrieval Augmented Generation (RAG) with Oracle APEX](https://www.linkedin.com/pulse/oracle-database-23ai-ai-vector-search-retrieval-augmented-rao-bqkcf/)
 
@@ -56,20 +62,20 @@ Faça o login no Oracle Cloud Infrastructure (OCI) e valide se a região de Chic
 
    ![Validate Region](images/validate-region.png " ")
 
-> **Caso a região de Chicago não esteja disponível, clique em manage region (caso já esteja disponível pule para a sessão 2 - Criação de Autonomous Database)** 
-![Manage Region](images/manage-region.png)
-
-Busque por **US Midwest (Chicago)** e clique no botão subscribe. O processo de subscrição pode levar alguns minutos, aguarde para dar sequência ao workshop. Clique no ícone escrito **Oracle Cloud** no canto esquerdo e faça logoff e login para validar se a região já foi subscrita.
-
-![Subscribe Region](images/subscribe-region.png)
 
 ## 2️⃣ Criação de Autonomous Database
 
-Clique no menu de hambúrger do canto superior esquerdo da tela, na sequência navegue até a página de gestão de autonomous databases.
+Clique no menu **(☰)** e selecione **Database ⮕ Autonomous Data Warehouse**.
 
 ![Autonomous Acess](images/autonomous-acess.png)
 
-Na página de gestão de Autonomous Databases, clique em create autonomous database. Selecione **ATP ou ADW**
+Verifique se está no compartimento **root**. Faça a criação do serviço **somente** neste compartimento.
+
+> **ATENÇÃO**: Antes de continuar verifique se está no compartimento **ROOT** conforme indicado abaixo.
+
+![Compartment Root](images/compartment-root.png)
+
+Na página de gestão de Autonomous Databases, clique em **Create Autonomous Database**.
   
 ![Create Autonomous](images/create-autonomous.png)
 
@@ -77,26 +83,32 @@ Escolha a versão 23ai para o banco de dados:
 
 ![Create 23AI](images/create-23ai.png)
 
-Coloque a senha **WORKSHOPsec2019##** , escolha **secure access from everywhere** e clique em **Create Autonomous Database**:
-<br><br>
+Utilize a senha recomendada: **WORKSHOPsec2019##** . Selecione **secure access from everywhere** e clique em **Create Autonomous Database**:
+
+> **ATENÇÃO**: Verifique se utilizou a senha recomendada **WORKSHOPsec2019##**
 
 ![Secure Acess](images/secure-acess.png)
 
-Aguarde até a conclusão da criação: 
-- Ícone amarelo = criando; 
-- Ícone verde = pronto para uso;
+Vá para o próximo laboratório.
+
+> **Status do Autonomous Database:**
+> <br>
+> <br>
+> - Ícone amarelo = Em criação; 
+> - Ícone verde = Pronto para uso;
+
 ![Yellow ADW](images/yellow-adw.png)
 ![Green ADW](images/green-adw.png)
 
 ## 3️⃣ Configurando o Autonomous Database
 
-Clique no ícone chamado database actions e SQL:
+Quando o serviço estiver com o ícone verde, clique no em **Database Actions ⮕ SQL**:
 ![Database Actions](images/database-actions.png)
 
-Caso seja requisitado, o usuário é **admin** e a senha é a **fornecida na criação do autonomous database da etapa anteiror.**
 Feche todos os tutoriais que aparecerão na página.
-Copie, cole e execute os comandos abaixo:
+<br>
 
+Em seguida, **copie, cole e execute os comandos abaixo conforme indicado na imagem**:
 
     <copy>  
         --Criação de credencial
@@ -154,7 +166,11 @@ Em seguida, clique na opção **Create Workspace**. Na tela seguinte, escolha a 
 
    ![Existing Schema](images/existing-schema.png)
 
-Na sequência, preencha o formulário como o exemplo abaixo (recomendamos a senha **WORKSHOPsec2019##**). E clique em **Create Workspace** para finalizar.
+Na sequência, clique no ícone **(☰)** na tela e selecione **DEMO**. 
+<br>
+Em seguida, preencha o formulário como o exemplo abaixo (recomendamos a senha **WORKSHOPsec2019##**). E clique em **Create Workspace** para finalizar.
+
+> **ATENÇÃO**: Verifique se utilizou a senha recomendada **WORKSHOPsec2019##**
 
    ![Create Workspace](images/create-workspace.png)
 
@@ -172,15 +188,23 @@ Encerre a sessão do usuário **ADMIN** clicando em **Sign Out**, localizado na 
 
 Faça o login no usuário **DEMO** criado nas etapas anteriores utilizando as credenciais de acesso indicadas abaixo.
 
+> **ATENÇÃO**: Verifique se utilizou a senha recomendada **WORKSHOPsec2019##**
+
    ![Login](images/login.png)
 
 Clique em **App Builder** e, em seguida, selecione **Import**.
 
    ![Import](images/import.png)
 
-Na página que será aberta, faça o upload do arquivo **f102.sql** utilizando o seguinte link: [f102.sql](https://objectstorage.us-ashburn-1.oraclecloud.com/p/XescapnJvbIn2SQTE9akiaJYethoa9t_4glIsMZa4mjI0VJrUdL2MvzqJmsJmF1C/n/idi1o0a010nx/b/bucket-prodesp/o/f102.sql).
+Na página que será aberta, faça o upload do arquivo **f102.sql**, cujo download está no seguinte link: [f102.sql](https://objectstorage.us-ashburn-1.oraclecloud.com/p/giVj_Pu_1DNcojoKoLWZnEbL2oqQANGFCEGCuIE8Mm1hRaXCMhUkkKdu4xqi9CjB/n/idi1o0a010nx/b/bucket-prodesp/o/f102.sql).
+
+> **ATENÇÃO:** Caso já tenha sido realizado o download no início do tutorial, não é necessário realizar novamente.
 
    ![Aplicação f102](images/f102.png)
+
+Clique em **Next:**
+
+   ![Import Next](images/import-next.png)
 
 Aceite as configurações padrão e clique em **Install Application** para prosseguir com a instalação.
 
@@ -211,27 +235,20 @@ Para preencher corretamente essa credencial, é necessário obter algumas inform
 
 Na tela **User Settings**, localize a guia **API Keys** no canto inferior esquerdo. Clique nela e siga as instruções do assistente (wizard) para criar um par de chaves de API. 
 
-> **ATENÇÃO: Certifique-se de salvar as seguintes informações em um local seguro, pois será necessária para configurar a credencial na próxima etapa:** <br></br>
-> - **OCI User ID**
-> - **OCI Private Key**
-> - **OCI Public Key Fingerprint**
-
+> **ATENÇÃO: Certifique-se de fazer o download das chaves em um local seguro, pois será necessária para configurar a credencial na próxima etapa. Após o dowload, certifique-se de clicar em ADD para criar a chave**
+> 
    ![API Keys](images/api-keys.png)
 
 O preenchimento do formulário no APEX exigirá informações específicas que podem ser obtidas na tela do OCI. Para facilitar, **utilize as seguintes correspondências de cores** entre os dois sistemas. Preencha as seguintes informações:
-- OCI User ID
-- OCI Private Key 
-- OCI Public Key Fingerprint
+- **OCI User ID** (Coletado no Configuration File Preview)
+- **OCI Public Key Fingerprint** (Coletado no Configuration File Preview)
+- **OCID Tenancy** (Coletado no Configuration File Preview)
+- **OCI Private Key** (Abra o arquivo **.pem** cujo download foi realizado em um bloco de notas e copie o conteúdo)
 
-   ![OCID API OCI](images/ocid-api-oci.png)
+Caso você tenha fechado a página com os dados, clique nos **três pontos** em **API Keys** ao lado direito do fingerprint e clique em **View Configuration File**
+
+   ![Config Tenancy](images/config-tenancy.png)
    ![OCID API APEX](images/ocid-api-apex.png)
-
-O OCI Tenancy ID pode ser coletado no OCI na página **Tenancy Details**, que pode ser acessada clicando no nome do seu Tenancy na página inicial do Console ou na seção Tenancy Information dentro de User Settings.
-
-   ![Tenancy Details](images/tenancy-details.png)
-   ![Tenancy OCID](images/tenancy-ocid.png)
-
-Retorne à página do APEX e insira o **OCI Tenancy ID** no campo correspondente, utilizando o valor coletado na página Tenancy Details do OCI.
 
 Por fim, clique em **Apply Changes** para salvar as configurações e concluir o ajuste da credencial.
 
@@ -243,7 +260,7 @@ Acesse o **App Builder** e clique na aplicação que você instalou recentemente
 
    ![APP Builder API](images/app-builder-api.png)
 
-Selecione em **Shared Components -> REST Data Resources**
+Selecione em **Shared Components ⮕ REST Data Resources**
 
    ![Shared Components](images/shared-components.png)
    ![Rest Data Resources](images/rest-data-resources.png)
@@ -263,14 +280,13 @@ Com a configuração da credencial concluída, podemos testar a aplicação. Par
 
    ![Run Application](images/run-application.png)
 
-Clique em **Arquivos e Normas**.
+Clique no ícone **(☰)** e selecione a aba **Arquivos e Normas**.
 
    ![Assistente AI](images/assistente-ai.png)
 
-Seguiremos com o upload de um arquivo PDF para dentro da aplicação. Qualquer PDF pode ser utilizado, mas, para fins didáticos deste workshop, recomendamos as normas disponíveis no link: [Normas Internas Dataprev](https://www.dataprev.gov.br/governanca/normativos/normasinternas). Para o nosso exemplo, utilizaremos o arquivo **Viagem a Serviço Nacional**.
+Seguiremos com o upload de um arquivo PDF para dentro da aplicação. Qualquer PDF pode ser utilizado, mas, para fins didáticos deste workshop utilizaremos como nosso exemplo o guia de [Normas Ambientais da Marinha](https://www.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-401.pdf)
 
-   ![Dataprev Site](images/dataprev-site.png)
-
+<br>
 Clique em **Upload** e preencha o formulário seguindo o exemplo fornecido. O **JSON** utilizado para o preenchimento está disponível logo abaixo da imagem de referência.
 
    ![Uploader](images/uploader.png)
@@ -279,7 +295,7 @@ Clique em **Upload** e preencha o formulário seguindo o exemplo fornecido. O **
     <copy>  
     {
     "by" : "words",
-    "max" : "100",
+    "max" : "200",
     "overlap" : "0",
     "split": "sentence",
     "language" : "ptb",
@@ -292,7 +308,9 @@ Se o upload for concluído com sucesso, sua tela deverá se assemelhar ao exempl
 
    ![Row Created](images/row-created.png)
 
-Clique em Assistente AI e faça uma pergunta relacionada ao documento carregado. Por exemplo, você pode perguntar: **"COMO FAZER ALTERAÇÃO DE VIAGEM"**.
+Clique em Assistente AI e faça uma pergunta relacionada ao documento carregado. 
+<br>
+Por exemplo, você pode perguntar: **COMO TROCAR ÁGUA DE LASTRO?**
 
    ![Question](images/question.png)
 

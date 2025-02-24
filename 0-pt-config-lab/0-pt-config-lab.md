@@ -1,5 +1,13 @@
 # Configuração do Oracle Free Tier 
 
+## 🎯 **Objetivos**
+
+A seguir o passo a passo do laboratório de criação da conta Free Tier na Oracle Cloud.
+
+### **Recursos e Suporte**:
+- **Documentação da Oracle Cloud**: [Documentação da Oracle Cloud](https://docs.oracle.com/en/cloud/)
+- **Tutoriais**: Explore o [Centro de Aprendizado da Oracle](https://mylearn.oracle.com/ou/home)
+
 ## 📌 Introdução
 
 > Este documento de configuração foi elaborado para guiar você na **criação de uma conta Oracle Cloud Free Tier**, que é necessária para realizar qualquer laboratório técnico na Oracle Cloud Infrastructure (OCI).
