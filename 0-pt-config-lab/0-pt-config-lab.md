@@ -155,7 +155,7 @@ Com sua conta Oracle Cloud Free Tier configurada, agora você pode prosseguir co
 
 - **Autores** - Caio Oliveira
 - **Autor Contribuinte** - Isabelle Anjos
-- **Última Atualização Por/Data** - Outubro 2024
+- **Última Atualização Por/Data** - Agosto 2026
 
 ## 🛡️ Declaração de Porto Seguro (Safe Harbor)
 
