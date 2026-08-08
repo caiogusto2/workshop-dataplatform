@@ -3,7 +3,7 @@
   "help": " ",
 	"tutorials": [
     {
-      "title": "[OBRIGATÓRIO] Configuração do Ambiente de Laboratório",
+      "title": "Configuração do Ambiente de Laboratório",
       "filename": "0-pt-config-lab/0-pt-config-lab.md"
     },
     {
