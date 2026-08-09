@@ -105,8 +105,8 @@ Renomeie o seu notebook para notebook_bronze (clique no lapis, mude o nome e ape
 import os
 import urllib.request
 
-orders_url = "https://objectstorage.sa-vinhedo-1.oraclecloud.com/p/fGNh9wk3SnUxV3Ipq3i41q3wmMgbaXJywPylGHZKiwfPO9OTt1JQBSdj855ueigd/n/idi1o0a010nx/b/handson-demo/o/orders.csv"
-customers_url = "https://objectstorage.sa-vinhedo-1.oraclecloud.com/p/fGNh9wk3SnUxV3Ipq3i41q3wmMgbaXJywPylGHZKiwfPO9OTt1JQBSdj855ueigd/n/idi1o0a010nx/b/handson-demo/o/customers.csv"
+orders_url = "https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/aidataplatform/arquivos_csv/orders.csv"
+customers_url = "https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/aidataplatform/arquivos_csv/customers.csv"
 
 # Substitua pelo path do volume criado no catálogo
 tmp_dir = "/Volumes/demo/default/vol01"
