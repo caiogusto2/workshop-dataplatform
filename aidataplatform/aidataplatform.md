@@ -1,326 +1,449 @@
-# Oracle Generative AI Agents
+# OCI AI Data Platform
 
 ## 🎯 **Objetivos**
 
-Descubrir como utilizar de forma prática a funcionalidade de busca vetorial do Oracle Generative AI Agents para otimizar consultas em documentos no formato PDF.
+Descubrir como utilizar de forma prática o serviço OCI Data Platform, criando um pipeline fim a fim; Importante e trabalhando com arquivos csv, realizando transformações, criando a estrutura medalhão e disponibilizando os resultados finais em um banco de dados autonomous. 
 
 O que você aprenderá:
 
-- Criar buckets no Object Storage e realizar o upload de documentos PDF.
-- Configurar e utilizar o serviço OCI Generative AI Agent para criar bases de conhecimento e agentes conversacionais.
-- Explorar como implementar a funcionalidade de Retrieval-Augmented Generation (RAG) para consultar documentos personalizados com eficiência e contexto.
-
->### ⚠️ **ATENÇÃO**:
->
->Antes de continuar, realize o download dos arquivos abaixo.
-><br>
-><br>
->- **Download dos PDFs**: Qualquer PDF pode ser utilizado, mas, para fins didáticos deste workshop utilizaremos como nosso exemplo o guia de [Normas Ambientais da Marinha](https://www.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-401.pdf)
+- Preparar a infraestrutura do OCI AI Data Platform.
+- Criar catálogo, volume, workspace e cluster Spark.
+- Carregar um dataset csv para o AIDP.
+- Realizar verificações de qualidade e análise exploratória dos dados.
+- Criar as camadas da arquitetura medalhão com PySpark.
+- Replicar datasets já processados para o Autonomous DB
+- Orquestrar notebooks sequencialmente por meio de Workflow.
 
 ### _**Aproveite sua experiência na Oracle Cloud!**_
 
 ## 📌 Introdução
 
->**O OCI Generative AI Agents é um serviço avançado que combina o poder dos grandes modelos de linguagem (LLMs) com técnicas de recuperação inteligente, permitindo que organizações desenvolvam agentes virtuais capazes de fornecer respostas contextuais e precisas ao consultar suas bases de conhecimento.** 
+>**O laboratório implementa um pipeline de dados em camadas. O processamento é realizado no OCI AI Data Platform com notebooks e Spark. Nesse workshop iremos trabalhar um dataset csv, processar os dados usando o AI DP e por fim disponibilizar os dados em um Banco de Dados Autonomous em OCI** 
 
-![AI Agents](images/ai-agent.png)
-Referência: [Generative AI Agents](https://www.oracle.com/br/artificial-intelligence/generative-ai/agents/)
+# **Parte 1 - Hands On AI Data Platform**
 
-### ➡️ **Recursos principais**
-Com funcionalidades avançadas, o OCI Generative AI Agents oferece uma experiência poderosa e eficiente.
-- **Integração de dados e canais de interação:** Suporte a chat e API, facilitando a interação entre usuários e agentes.  
-- **Respostas contextualmente relevantes:** As respostas são geradas com base em consultas inteligentes à base de conhecimento, garantindo precisão e contexto.  
-- **Pesquisa híbrida:** Combina métodos léxicos e semânticos para alcançar maior assertividade nas respostas.  
-- **Moderação de conteúdo:** Garante interações seguras e respeitosas com controles para entrada e saída de dados.  
-- **Conversas multi-turn:** Permite que usuários façam perguntas de acompanhamento, com respostas que levam em conta o histórico da conversa.  
-- **Interpretação de elementos visuais:** Capacidade de interpretar gráficos e tabelas em PDFs sem necessidade de descrições adicionais.  
-- **Hiperlinks automáticos:** Os links presentes nos documentos são automaticamente extraídos e incluídos nas respostas.  
+## **1️⃣ Preparação da infraestrutura**
 
+Antes de iniciar o Hands On, prepare os recursos necessários:
 
-### ➡️ **Como o OCI Generative AI Agents revoluciona a interação com bases de conhecimento?**
+1.  Crie **uma instância AI Data Platform**, garanta que esta fazendo a criação da instância na região de São Paulo - GRU.
+![Link AIDP](images/link_aidp.png)
 
-O serviço transforma a forma como os agentes interagem ao:  
+Dê um nome a sua instância, seu workspace e escolha as policies standard. Não há necessidade de preenchimento da sessão que contém o Autonomous AI Lakehouse
 
-- **Aumentar a transparência e a rastreabilidade:** Cada resposta pode ser vinculada à sua fonte original, garantindo responsabilidade.  
-- **Garantir atualizações contínuas:** Bases de conhecimento podem ser atualizadas sem interromper o funcionamento do agente.  
-- **Oferecer escalabilidade e segurança:** Arquitetura robusta que suporta cargas crescentes sem comprometer a integridade dos dados.
+![Form01](images/form01.png)
 
-### **Recursos e Suporte**:
+![Form02](images/form02.png)
 
-- **Documentação da Oracle Cloud**: [Generative AI Agents](https://docs.oracle.com/pt-br/iaas/Content/generative-ai-agents/home.htm)
-- **Tutoriais**: [Deploy an ODA Chatbot powered by Generative AI Agents](https://apexapps.oracle.com/pls/apex/f?p=133:180:2908048658105::::wid:4022)
+> **⚠️ ATENÇÃO:** A criação da sua instância AIDP deve demorar cerca de uns 10 minutos para conclusão.
 
-## 1️⃣ Validação de Região
+2.  Crie **um autonomous db**
 
-Faça o login no Oracle Cloud Infrastructure (OCI) e valide se a região de Chicago se encontra disponível para uso.
+![Link ADB](images/link_adb.png)
 
-   ![Validate Region](images/validate-region.png " ")
+Crie um autonomous utilizando as seguintes configurações.
 
-## 2️⃣ Criação de Bucket no Object Storage e Upload de PDF
+![Form01_ADB](images/form01_adb.png)
 
-Na página inicial da Oracle Cloud, clique no menu **(☰)** e selecione **Storage ⮕ Buckets**.
+> **⚠️ ATENÇÃO:** Garanta que a versão do Autonomous seja 26ai.
 
-![Buckets](images/buckets.png)
+![Form02_ADB](images/form02_adb.png)
 
-Na região esquerda de sua tela, verifique se está no compartimento **root**. Faça a criação do serviço **somente** neste compartimento.
+> **⚠️ ATENÇÃO:** A sugestão é utilizar a senha **WORKSHOPsec2019##**, contudo você pode escolher um outra senha se assim desejar. O restante das configurações vocês podem utilizar o padrão e clicar no botão create
 
-> **ATENÇÃO**: Antes de continuar verifique se está no compartimento **ROOT** conforme indicado abaixo.
+![Form03_ADB](images/form03_adb.png)
 
-![Compartment Root](images/compartment-root.png)
+> **⚠️ ATENÇÃO:** A criação da sua instância Autonomous Database deve demorar cerca de uns 5 minutos para conclusão.
 
+3.  Retorne à instância do AIDP e crie **um catálogo Standard**.
 
-Clique em **Create Buckets**. Em seguida, insira um nome para o seu bucket. Recomendamos o nome **ai-agent-fast-track**. Finalize clicando em **Create**.
+![caminho_aidp01](images/caminho_aidp01.png)
 
-![Create Buckets](images/create-buckets.png)
-![Name bucket](images/name-bucket.png)
+Clique em Master Catalog, depois em create catalog, dê o nome de demo para seu catalogo e clique em create
 
-Após a criação do bucket, clique em seu nome para acessá-lo. Em seguida, clique em **Upload**, selecione os arquivos PDFs desejados do seu computador, **clique e arraste para a região delimitada** e finalize clicando em **Upload** na parte inferior da tela.
+![catalog_create](images/catalog_create.png)
 
-Qualquer PDF com texto selecionável pode ser utilizado, mas, para fins didáticos deste workshop utilizaremos como nosso exemplo o guia de [Normas Ambientais da Marinha](https://www.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-401.pdf)
+4.  Clique no catálogo demo, no schema default, escolha volumes e crie **um volume virtual Standard** clicando no botão de + (próximo ao campo de filtragem). Dê o nome de vol01
 
-> **ATENÇÃO:** Caso já tenha sido realizado o download no início do tutorial, não é necessário realizar novamente.
+![volume01](images/volume01.png)
 
-![Upload PDF](images/upload-pdf.png)
+5.  Agora clique na aba do canto esquerdo em workspace, e crie **um Workspace** clicando no botão de + (próximo ao campo de filtragem). Dê o nome de workspace01.
 
-Aguarde a conclusão do processo. Em seguida, clique em **Close**. O arquivo deve aparecer em seu bucket como na imagem identificada abaixo.
+![workspace01](images/workspace01.png)
 
-![Close](images/close.png)
-![Bucket PDF](images/bucket-pdf.png)
+6.  Após concluida a criação do workspace, clique no mesmo, e na aba do canto esquerdo selecione compute. Crie **um cluster Spark**, clicando no botão de + (próximo ao campo de filtragem). Dê o nome de spark01.
 
-## 3️⃣ Criação da Base de Conhecimento (Knowledge Base)
+![compute_spark01](images/compute_spark01.png)
 
-clique no menu **(☰)** e selecione **Analytics & AI  ⮕ Generative AI Agents**.
+7.  Faça a integração do Autonomous com o AIDP, através da aba Master Catalog
 
-![Menu Agents](images/menu-agents.png)
+Clique em create catalog, escolha o tipo external.
 
-Na página inicial do serviço, no menu à esquerda, selecione a opção **Knowledge Bases**.
+Na tela de detalhes do seu autonomous database, clique em database connection e faça o download de sua wallet
 
-![Knowledge Menu](images/knowledge-menu.png)
+![autonomous_connection](images/autonomous_connection.png)
 
-Na região esquerda de sua tela, verifique se está no compartimento **root**. Faça a criação do serviço **somente** neste compartimento.
+> **⚠️ ATENÇÃO:** A sugestão é utilizar a senha **WORKSHOPsec2019##**, contudo você pode escolher um outra senha se assim desejar.
 
-> **ATENÇÃO**: Antes de continuar verifique se está no compartimento **ROOT** conforme indicado abaixo.
+Dê o nome para o catálogo de adb01, faça o upload da wallet para o formulário do AIDP, escolha o serviço medium e faça o preenchimento das outras informações conforme o print abaixo
 
-![Compartment Root](images/compartment-root.png)
+![aidp_adb_connect](images/aidp_adb_connect.png)
 
-Selecione **Create Knowledge Base**, conforme indicado abaixo.
+8.  Inicie o Hands On.
 
-![Create Knowledge](images/create-knowledge.png)
+## **2️⃣ Criação da camada Bronze**
 
-Nesta tela, siga os passos abaixo:  
-1. Insira o nome da sua base de conhecimento. Recomendamos utilizar **knowledge-base-agent**.  
-2. Compartment: ```<nome-tenancy>(root)```
-3. No campo **Data Source Type**, selecione a opção **Object Storage**.  
-4. Selecione a opção **Enable Hybrid Search**, que combina pesquisa semântica (busca baseada no significado e contexto) e pesquisa lexical (busca por correspondência exata de termos), garantindo resultados mais precisos e relevantes.
-5. Clique em **Specify Data Source** para configurar os arquivos que serão utilizados pelo Agent.  
+No canto esquerdo da tela, clique em workspace01, e crie um novo notebook clicando no botão de + (próximo ao campo de filtragem). O primeiro passo será fazer o download dos arquivos `orders.csv` e `customers.csv`, carregá-los com Spark e persistir os dados como tabelas Delta na camada Bronze.
 
-![Informations Knowledge](images/informations-knowledge.png)
+![notebook01](images/notebook01.png)
 
-Na tela seguinte, siga os passos abaixo:
-1.  Insira o nome da sua fonte de dados. Recomendamos utilizar **pdfs-marinha**
-2.  Marque a opção **Enable Multi-Modal Parsing** para permitir a interpretação de gráficos, tabelas e outros elementos visuais dos documentos.
-3.  Em Select bucket, escolha o bucket previamente criado (neste exemplo, bucket-ai-agent).
-4.  Marque a caixa ao lado de **Object prefixes** para selecionar os arquivos que serão utilizados. Você poderá escolher entre 1 ou mais arquivos.
-5.  Clique em **Create** para finalizar a criação da fonte de dados.
+Renomeie o seu notebook para notebook_bronze (clique no lapis, mude o nome e aperte enter) e cole o código abaixo dentro da célula. Após colar o mesmo, aperte crlt + s para salvar o mesmo
 
-![Data Source](images/data-source.png)
+![notebook02](images/notebook02.png)
 
-Na tela de criação da base de conhecimento, marque a opção **Automatically start ingestion job for above data sources**. Em seguida, clique em **Create**.
+``` python
+import os
+import urllib.request
 
-![Creating Knowledge Base](images/creating-knowledge-base.png)
+orders_url = "https://objectstorage.sa-vinhedo-1.oraclecloud.com/p/fGNh9wk3SnUxV3Ipq3i41q3wmMgbaXJywPylGHZKiwfPO9OTt1JQBSdj855ueigd/n/idi1o0a010nx/b/handson-demo/o/orders.csv"
+customers_url = "https://objectstorage.sa-vinhedo-1.oraclecloud.com/p/fGNh9wk3SnUxV3Ipq3i41q3wmMgbaXJywPylGHZKiwfPO9OTt1JQBSdj855ueigd/n/idi1o0a010nx/b/handson-demo/o/customers.csv"
 
-Verifique as mensagens no canto superior direito, indicando o sucesso na criação da base de conhecimento, da fonte de dados e do job de ingestão.
+# Substitua pelo path do volume criado no catálogo
+tmp_dir = "/Volumes/demo/default/vol01"
+os.makedirs(tmp_dir, exist_ok=True)
 
-O status da base de conhecimento aparecerá como **Creating** até que o processo seja concluído, cuja média de tempo é de **3-5 minutos**. Aguarde a finalização antes de prosseguir.
+orders_file = os.path.join(tmp_dir, "orders.csv")
+customers_file = os.path.join(tmp_dir, "customers.csv")
 
-![Sucess Messages](images/sucess-messages.png)
+urllib.request.urlretrieve(orders_url, orders_file)
+urllib.request.urlretrieve(customers_url, customers_file)
 
-## 4️⃣ Criação do Agente de IA
+df_orders = (
+    spark.read
+    .option("header", "true")
+    .option("inferSchema", "true")
+    .option("sep", ";")
+    .csv(orders_file)
+)
+
+df_customers = (
+    spark.read
+    .option("header", "true")
+    .option("inferSchema", "true")
+    .option("sep", ";")
+    .csv(customers_file)
+)
+
+spark.sql("CREATE CATALOG IF NOT EXISTS demo")
+spark.sql("CREATE SCHEMA IF NOT EXISTS demo.bronze")
+
+(
+    df_orders.write
+    .mode("overwrite")
+    .option("overwriteSchema", "true")
+    .saveAsTable("demo.bronze.orders")
+)
+
+(
+    df_customers.write
+    .mode("overwrite")
+    .option("overwriteSchema", "true")
+    .saveAsTable("demo.bronze.customers")
+)
+
+print("Created Delta tables:")
+print("demo.bronze.orders")
+print("demo.bronze.customers")
+```
+
+Para rodar o seu notebook, anexe um cluster spark e clique em run all
+
+![notebook03](images/notebook03.png)
+
+Caso tenha sucesso o seguinte log será apresentado na tela
+
+![notebook04](images/notebook04.png)
+
+### **➡️ Análise exploratória da camada Bronze**
+
+Após o carregamento, clique no botão **+add a new cell** (logo abaixo do parágrafo existente no seu notebook) para adicionar um novo parágrafo e execute verificações de estrutura, amostras, valores nulos, estatísticas e duplicidades.
+
+Copie e cole o código abaixo no novo parágrafo do notebook e aperte ctrl + enter para executar apenas esse parágrafo do notebook
+
+``` python
+print("=== DESCRIBE TABLE: demo.bronze.orders ===")
+spark.sql("DESCRIBE TABLE demo.bronze.orders").show(200, truncate=False)
+
+print("=== DESCRIBE TABLE: demo.bronze.customers ===")
+spark.sql("DESCRIBE TABLE demo.bronze.customers").show(200, truncate=False)
+
+spark.sql("SELECT * FROM demo.bronze.orders LIMIT 10").show(10, truncate=False)
+spark.sql("SELECT * FROM demo.bronze.customers LIMIT 10").show(10, truncate=False)
+
+spark.sql("""
+SELECT
+  COUNT(*) AS row_count,
+  SUM(CASE WHEN CUSTOMER_ID IS NULL THEN 1 ELSE 0 END) AS customer_id_nulls,
+  SUM(CASE WHEN ORDER_ID IS NULL THEN 1 ELSE 0 END) AS order_id_nulls,
+  SUM(CASE WHEN ORDER_DATE IS NULL THEN 1 ELSE 0 END) AS order_date_nulls,
+  SUM(CASE WHEN ORDER_TOTAL IS NULL THEN 1 ELSE 0 END) AS order_total_nulls,
+  SUM(CASE WHEN COST_OF_DELIVERY IS NULL THEN 1 ELSE 0 END) AS cost_of_delivery_nulls,
+  MIN(ORDER_TOTAL) AS min_order_total,
+  MAX(ORDER_TOTAL) AS max_order_total,
+  AVG(ORDER_TOTAL) AS avg_order_total,
+  MIN(COST_OF_DELIVERY) AS min_cost_of_delivery,
+  MAX(COST_OF_DELIVERY) AS max_cost_of_delivery,
+  AVG(COST_OF_DELIVERY) AS avg_cost_of_delivery
+FROM demo.bronze.orders
+""").show(truncate=False)
+
+spark.sql("""
+SELECT
+  COUNT(*) AS row_count,
+  SUM(CASE WHEN CUSTOMER_ID IS NULL THEN 1 ELSE 0 END) AS customer_id_nulls,
+  SUM(CASE WHEN CUST_FIRST_NAME IS NULL THEN 1 ELSE 0 END) AS cust_first_name_nulls,
+  SUM(CASE WHEN CUST_LAST_NAME IS NULL THEN 1 ELSE 0 END) AS cust_last_name_nulls,
+  SUM(CASE WHEN CUST_EMAIL IS NULL THEN 1 ELSE 0 END) AS cust_email_nulls,
+  SUM(CASE WHEN CREDIT_LIMIT IS NULL THEN 1 ELSE 0 END) AS credit_limit_nulls,
+  MIN(CREDIT_LIMIT) AS min_credit_limit,
+  MAX(CREDIT_LIMIT) AS max_credit_limit,
+  AVG(CREDIT_LIMIT) AS avg_credit_limit
+FROM demo.bronze.customers
+""").show(truncate=False)
+
+spark.sql("""
+SELECT CUSTOMER_ID, ORDER_ID, COUNT(*) AS cnt
+FROM demo.bronze.orders
+GROUP BY CUSTOMER_ID, ORDER_ID
+HAVING COUNT(*) > 1
+ORDER BY cnt DESC
+""").show(truncate=False)
+
+spark.sql("""
+SELECT CUSTOMER_ID, COUNT(*) AS cnt
+FROM demo.bronze.customers
+GROUP BY CUSTOMER_ID
+HAVING COUNT(*) > 1
+ORDER BY cnt DESC
+""").show(truncate=False)
+```
+
+Caso tenha sucesso na execução os seguintes outputs aparecerão com a análise dos dados recém importados
+![notebook05](images/notebook05.png)
+
+## **3️⃣ Criação da camada Silver**
+
+Seguindo os mesmos passos da etapa anterior, crie um novo notebook para a camada Silver. Dê o nome de notebook_silver. Nesta etapa, as tabelas `orders` e `customers` da Bronze são combinadas pelo campo `CUSTOMER_ID`.
+
+``` python
+from pyspark.sql.functions import col
+
+df_orders = spark.table("demo.bronze.orders")
+df_customers = spark.table("demo.bronze.customers")
+
+spark.sql("CREATE SCHEMA IF NOT EXISTS demo.silver")
+
+df_join = (
+    df_orders.alias("o")
+    .join(df_customers.alias("c"), on="CUSTOMER_ID", how="inner")
+)
+
+df_silver = df_join.select(
+    col("CUSTOMER_ID"), col("ORDER_ID"), col("ORDER_DATE"),
+    col("ORDER_MODE"), col("ORDER_STATUS"), col("ORDER_TOTAL"),
+    col("SALES_REP_ID"), col("PROMOTION_ID"), col("WAREHOUSE_ID"),
+    col("DELIVERY_TYPE"), col("COST_OF_DELIVERY"),
+    col("WAIT_TILL_ALL_AVAILABLE"), col("DELIVERY_ADDRESS_ID"),
+    col("o.CUSTOMER_CLASS").alias("ORDER_CUSTOMER_CLASS"),
+    col("CARD_ID"), col("INVOICE_ADDRESS_ID"), col("CUST_FIRST_NAME"),
+    col("CUST_LAST_NAME"), col("NLS_LANGUAGE"), col("NLS_TERRITORY"),
+    col("CREDIT_LIMIT"), col("CUST_EMAIL"), col("ACCOUNT_MGR_ID"),
+    col("CUSTOMER_SINCE"), col("c.CUSTOMER_CLASS").alias("CUSTOMER_CLASS"),
+    col("SUGGESTIONS"), col("DOB"), col("MAILSHOT"),
+    col("PARTNER_MAILSHOT"), col("PREFERRED_ADDRESS"), col("PREFERRED_CARD")
+)
+
+df_silver.printSchema()
+df_silver.show(10, truncate=False)
+
+(
+    df_silver.write
+    .mode("overwrite")
+    .option("overwriteSchema", "true")
+    .saveAsTable("demo.silver.customers_orders")
+)
+```
+![notebook06](images/notebook06.png)
+
+### **➡️ Análise exploratória da Silver**
+
+Conforme o notebook anterior, crie um novo parágrafo ainda dentro do notebook_silver e cole o conteudo abaixo
+``` python
+import pyspark.sql.functions as F
+
+df_analyze = spark.table("demo.silver.customers_orders")
+
+print(f"Rows: {df_analyze.count()}")
+print(f"Columns: {len(df_analyze.columns)}")
+
+df_analyze.select([
+    F.count(F.when(F.col(c).isNull(), c)).alias(c)
+    for c in df_analyze.columns
+]).show(truncate=False)
+
+(
+    df_analyze.groupBy("ORDER_ID")
+    .count()
+    .filter(F.col("count") > 1)
+    .show(truncate=False)
+)
+
+(
+    df_analyze
+    .agg(F.countDistinct("CUSTOMER_ID").alias("distinct_customers"))
+    .show()
+)
+
+df_analyze.describe().show(truncate=False)
+```
+![notebook07](images/notebook07.png)
+
+## **4️⃣ Criação da camada Gold**
+
+Seguindo os mesmos passos da etapa anterior, crie um novo notebook chamado notebook_gold. A camada Gold normaliza `CUSTOMER_CLASS` e agrega os pedidos para produzir indicadores de quantidade, vendas e ticket médio.
+
+``` python
+import pyspark.sql.functions as F
+
+spark.sql("CREATE SCHEMA IF NOT EXISTS demo.gold")
+
+df_silver = spark.table("demo.silver.customers_orders")
+
+df_norm = (
+    df_silver
+    .withColumn(
+        "CUSTOMER_CLASS_NORM",
+        F.trim(
+            F.regexp_replace(
+                F.regexp_replace(F.upper(F.col("CUSTOMER_CLASS")), u"\u00A0", " "),
+                r"\s+",
+                " "
+            )
+        )
+    )
+)
+
+df_gold = (
+    df_norm
+    .groupBy("CUSTOMER_CLASS_NORM")
+    .agg(
+        F.count("ORDER_ID").alias("total_orders"),
+        F.round(F.sum("ORDER_TOTAL"), 2).alias("total_sales"),
+        F.round(F.avg("ORDER_TOTAL"), 2).alias("avg_order_value")
+    )
+    .orderBy(F.col("total_orders").desc())
+)
 
-No menu à esquerda, selecione a opção **Agents**. Em seguida, clique em **Create Agent**
+df_gold.show(truncate=False)
 
-![Agents](images/agents.png)
+(
+    df_gold.write
+    .mode("overwrite")
+    .option("overwriteSchema", "true")
+    .saveAsTable("demo.gold.customer_class_agg_review")
+)
 
-Nesta tela, siga os seguintes passos:
-1. Insira o nome do agente. Recomendamos o nome **ai-agent**.
-2. Na seção **Add Knowledge Bases**, selecione a base de conhecimento que será vinculada ao agente chamada **knowledge-base-agent**
-> **ATENÇÃO:** Certifique-se de que a base de conhecimento está ativa. **O Lifecycle State deve aparecer como Active.**
+spark.table("demo.gold.customer_class_agg_review").show(truncate=False)
+```
+![notebook08](images/notebook08.png)
 
-3. **Pule o campo descrição.**
-4. No campo **Welcome Message**, insira a mensagem de boas-vindas que será exibida para o usuário ao iniciar a interação com o agente. Exemplo: 
-> **Olá! Sou seu assistente virtual para documentos. Como posso ajudar você hoje?**
+## **5️⃣ Escrita no Autonomous Database**
 
-5. No campo **Instructions for RAG Generation**, adicione instruções específicas para o agente. No exemplo, foi utilizado:  
-> **Você é um assistente virtual especialista em leitura de documentos. Responda sempre de forma clara e exclusivamente em português brasileiro.**
+Por fim vamos replicar e escrever as tabelas demo.silver.customers_orders e demo.gold.customer_class_agg_review para o autonomous que mapeamos anteriormente. Outros exemplos podem ser encontrados na página  https://github.com/oracle-samples/oracle-aidp-samples/tree/main
 
-![Configuration Agents](images/configuration-agents.png)
+Crie um novo notebook e dê o nome de notebook_adb, copie e cole o código abaixo.
 
-Certifique-se de que a opção **Automatically create an endpoint for this agent** está marcada. Isso permitirá que o sistema crie automaticamente um endpoint para o agente, facilitando a interação com ele via API com outras aplicações.
+Execute e teremos os dados replicados para o Autonomous previamente configurado com o AIDP
 
-Clique no botão **Create** para finalizar a criação do agente.
+``` python
+# ------------------------------------------------------------
+# Silver
+# ------------------------------------------------------------
 
-![Create Agent](images/create-agent.png)
+silver_df = spark.table("demo.silver.customers_orders")
 
-Nesta tela, aceite o **Acordo de Licença e Política de Uso do Llama 3**, o modelo de inteligência artificial utilizado pelo Agent.
+silver_df.show(10, truncate=False)
 
-![LLAMA3](images/llama3.png)
+silver_df.write.saveAsTable("adb01.ADMIN.CUSTOMERS_ORDERS")
 
-No canto superior direito, verifique as mensagens de confirmação. Elas devem indicar que a criação do agente  e do endpoint foram concluídas com sucesso.
+print("Silver carregada com sucesso!")
 
-O campo **Lifecycle State** exibirá o status como **Creating**, com média de tempo  de **5-10 minutos** para finalização. Aguarde até que o status mude para **Active**, indicando que o agente está pronto para uso.
 
-![Sucess Messages Agent](images/sucess-messages-agent.png)
+# ------------------------------------------------------------
+# Gold
+# ------------------------------------------------------------
 
-Clique no nome do agente e, em seguida, selecione a opção **Launch Chat** para iniciar a interação com o agente.
+gold_df = spark.table("demo.gold.customer_class_agg_review")
 
-![Launch Chat](images/launch-chat.png)
+gold_df.show(truncate=False)
 
-> **ATENÇÃO: Caso o agente esteja ativo e o botão não esteja disponível, acesse o menu à esquerda inferior e selecione Endpoints. Verifique se o Lifecycle State do endpoint está como Active. Se o status estiver como Creating, aguarde a finalização e atualize a página.**
-![Endpoints](images/endpoints.png)
+gold_df.write.saveAsTable("adb01.ADMIN.CUSTOMER_CLASS_AGG_REVIEW")
 
-## 5️⃣ Interface de Interação com o Assistente Virtual
+print("Gold carregada com sucesso!")
+```
+![notebook09](images/notebook09.png)
 
-### Agente e Endpoint (azul)
-- **Agente:** Selecione o agente configurado (ex: **ai-agent**).
-- **Agent Endpoint:** Ponto de acesso para conectar o assistente às bases de conhecimento.
+Apenas para teste, crie um novo parágrafo e faça uma query nas tabelas recém carregadas para dentro do Autonomous. Copie e cole o código abaixo
 
-### Área de Chat (vermelho)
-- Espaço principal para interação, com mensagens de saudação e respostas.
-- **Type a message...:** Digite sua pergunta e clique em **Submit**.
-- **Reset chat session:** Reinicia a sessão, apagando o histórico.
+``` python
+alh_df_silver = spark.read.format("aidataplatform") \
+    .option("catalog.id", "adb01") \
+    .option("pushdown.sql", "SELECT * FROM ADMIN.CUSTOMERS_ORDERS WHERE CUSTOMER_ID = 11") \
+    .load()
 
-### Traces (destacado em laranja)
-- Exibe os detalhes técnicos de cada interação com o agente, incluindo as consultas realizadas, os resultados retornados e a origem das informações (página e parágrafo).
+alh_df_silver.show()
 
-![Interface Agent](images/interface-agent.png)
+alh_df_gold = spark.read.format("aidataplatform") \
+    .option("catalog.id", "adb01") \
+    .option("pushdown.sql", "SELECT * FROM ADMIN.CUSTOMER_CLASS_AGG_REVIEW WHERE CUSTOMER_CLASS_NORM = 'PRIME'") \
+    .load()
 
-Na imagem abaixo, você pode observar o funcionamento do assistente virtual ao responder perguntas baseadas no documento previamente carregado na base de conhecimento.
+alh_df_gold.show()
+```
+![notebook10](images/notebook10.png)
 
-Exemplos de perguntas para os documentos utilizados:
+## **6️⃣ Orquestração com Workflow**
 
-> ### **NORMAS DA AUTORIDADE MARÍTIMA PARA A PREVENÇÃO DA POLUIÇÃO AMBIENTAL CAUSADA POR EMBARCAÇÕES E PLATAFORMAS**
-> 1. Quais são os níveis de impacto ambiental considerados na valoração de multas administrativas por poluição hídrica?
-> 2. O que acontece se um navio derramar óleo no mar?
-> 3. O que um navio precisa fazer para cuidar da água de lastro?
-> 4. Como o governo decide o valor da multa para poluição da água?
-> 5. Se um navio precisar jogar água de lastro no mar, existem lugares proibidos?
-> 6. Se um navio for multado, ele pode recorrer?
-> 7. Quanto tempo o dono do navio tem para pagar a multa?
+Por fim clique no canto esquerdo em **Workflow \> Create Job**, dê o nome de job01 e configure as 4 atividades em sequência, associando cada uma aos notebooks criados para as camadas:
 
-![Questions](images/questions-agent.png)
+``` text
+notebook_bronze  ->  notebook_silver  ->  notebook_gold > notebook_adb
+```
 
-Ao clicar em **View Citations**, você expande as referências utilizadas pelo assistente para gerar a resposta. Os **ícones** à esquerda permitem abrir o documento em outra aba do navegador ou fazer o download do arquivo, respectivamente 
+![workflow01](images/workflow01.png)
 
-Cada citação apresenta as seguintes informações:
+Execute o workflow, acompanhe a execução e valide os resultados de cada atividade na aba run.
 
-> - **Title:** O nome do arquivo PDF de onde a informação foi extraída (neste exemplo, norman-401.pdf).
-> - **Object storage path:** O caminho do arquivo no armazenamento do OCI.
-> - **Document ID:** Um identificador único do documento.
-> - **Page numbers:** Indica o número da página no documento de onde a informação foi retirada.
-> - **Source text:** Exibe o trecho exato do documento utilizado para compor a resposta do assistente.
+![workflow02](images/workflow02.png)
 
-![Citations](images/citations.png)
+![workflow03](images/workflow03.png)
 
+Caso tenhamos a intenção de agendar a execução do workflow podemos fazer na aba de configuração do job, clicando em details e schedule. O Job também pode ser acionado através de APIs e SDKs 
 
-**Laboratório finalizado!** Parabéns por concluir todas as etapas. Fique à vontade para criar novas perguntas, explorar a sua aplicação e descobrir ainda mais possibilidades com o seu assistente virtual.
+![workflow04](images/workflow04.png)
 
-Você poderá seguir para o próximo laboratório.
+------------------------------------------------------------------------
 
-## 6️⃣ [EXTRA] Embeddings com OCI Generative AI
+## **✅ Laboratório finalizado!**
 
-### ❓**O que são Embeddings?**
-> Embeddings são representações vetoriais de objetos, como textos ou imagens. **Ao transformar objetos em vetores, conseguimos realizar operações matemáticas que permitem comparar, analisar e calcular a similaridade entre eles.** Isso possibilita, por exemplo, identificar semelhanças entre textos ou buscar informações relevantes de forma eficaz.
+Parabéns! Você concluiu o Hands On do **OCI AI Data Platform (AIDP)**, construindo as camadas **Bronze**, **Silver** e **Gold** e orquestrando as atividades por meio de um **Workflow**.
 
-### 🔍 **Por que Embeddings são importantes?**
->   - **Análise de Similaridade:** Com embeddings, podemos calcular a proximidade entre diferentes objetos, facilitando a identificação de itens semelhantes.
->    - **Eficiência Computacional:** Representar dados em vetores torna o processamento de informações mais rápido e eficiente.
->    - **Versatilidade:** Embeddings podem ser usados em vários contextos, como busca de informações, recomendação de conteúdo, entre outros.
-
-Vamos acessar o Serviço de OCI Generative AI. A forma mais simples de fazer isto é pesquisando por
-**“Generative AI”** na aba de busca:
-
-   ![Search Generative AI](images/search-genai.png " ")
-
-Uma vez dentro do serviço, vamos selecionar **“Embedding”**, no menu do canto esquerdo, abaixo de **“Playground”**.
-
-   ![Acess Playground](images/genai-playground-acess.png " ")
-
-Dentro do PlayGround, vamos na caixa de seleção “model” e vamos selecionar o modelo **cohere.embed-multilingual-v3**, em seguida, adicione as frases abaixo nas caixas brancas disponíveis. Não é necessário que estejam em ordem:
-
-    <copy>
-    Cachorros são animais incríveis.
-    </copy>
-<!-- Separador -->
-
-    <copy>  
-    Eu amo cães, são fantásticos.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    Cachorros adoram brincar ao ar livre e correr pelo parque.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    Os gatos são animais elegantes e misteriosos.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    Gatos são mestres em encontrar os melhores lugares para dormir.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    Gatos têm uma habilidade incrível de se espremer em espaços pequenos.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    A Porsche faz carros belíssimos.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    A Ferrari é conhecida por seus carros velozes.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    Carros esportivos são feitos para quem busca emoção na estrada.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    Gatos gostam de se esconder nos carros esportivos, como em uma Ferrari.  
-    </copy>  
-<!-- Separador -->
-
-    <copy>  
-    Cachorros adoram aproveitar o vento enquanto passeiam em carros conversíveis, como um Porsche.  
-    </copy>  
-
-![Embeddings](images/embeddings.png " ")
-
-Em seguida, clique em **Run**.
-
-![Embeddings Response](images/embeddings-response.png " ")
-
-> **Os vetores de embeddings costumam ter muitas dimensões (em geral, entre 512 e 1024 dimensões). Como é impossível visualizar graficamente algo com tantas dimensões, o que costuma ser feito é uma “Projeção” destes vetores multidimensionais em superfícies bidimensionais, permitindo a visualização.**
-
-A proximidade entre os vetores no gráfico representa a **similaridade semântica entre as frases.** Quanto mais próximos dois pontos estão, mais semelhantes são as frases em termos de conteúdo e contexto, de acordo com o modelo de embedding.
-
-Por exemplo:
-   - **Vetores 1, 2, 3, 4, 5 e 6:** As frases sobre características e comportamentos de gatos e cachorros estão agrupadas, refletindo similaridades relacionadas aos animais e suas ações típicas.
-   - **Vetores 7, 8 e 9:** As frases que mencionam carros esportivos e marcas como Ferrari e Porsche estão próximas entre si, já que compartilham temas de automóveis e experiências de direção.
-   - **Vetores 10 e 11:** As frases sobre "gato e Ferrari" e "cachorro e Porsche" estão próximas entre si e dos clusters de carros de luxo, pois combinam comportamentos de animais de estimação com automóveis, unindo ambos os temas.
 
 ## 👥 Agradecimentos
 
-- **Autores** - Isabelle Anjos
-- **Autores Contribuintes** - Caio Oliveira, Gabriela Miyazima, Aristotelles Serra
-- **Última Atualização Por/Data** - Janeiro 2025
+- **Autores** - Caio Oliveira
+- **Autores Contribuintes** - Isabelle Anjos
+- **Última Atualização Por/Data** - Agosto 2026
 
 ## 🛡️ Declaração de Porto Seguro (Safe Harbor)
 
