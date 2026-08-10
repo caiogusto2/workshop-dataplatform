@@ -2,17 +2,17 @@
 
 ## 🎯 **Objetivos**
 
-Demonstrar de forma prática como utilizar algumas das funcionalidades do Oracle Autonomous Database com o objetivo de atender workloads de data warehouse
+Demonstrar, de forma prática, como utilizar algumas das funcionalidades do Oracle Autonomous Database para atender a workloads de Data Warehouse.
 
 O que você aprenderá:
 
-- Criar e configurar novo schemas e usuários no Oracle Autonomous DB
-- Realizar e orquestrar transformações utilizando procedures e oracle scheduler
-- Importar e configurar aplicação Select AI
-- Configurar e testar data redaction
-- Configurar ORDS para consultas sobre datasets 
+- Criar e configurar novos schemas e usuários no Oracle Autonomous Database.
+- Realizar e orquestrar transformações utilizando procedures e Oracle Scheduler.
+- Importar e configurar uma aplicação Select AI.
+- Configurar e testar Data Redaction.
+- Configurar o ORDS para consultas sobre datasets.
 
->### ⚠️ **ATENÇÃO**: Recomendamos que antes de iniciar esse workshop, conclua o hands on de AI Data Platform
+>### ⚠️ **ATENÇÃO**: Recomendamos que, antes de iniciar este workshop, você conclua o hands-on de AI Data Platform.
 
 ### _**Aproveite sua experiência na Oracle Cloud!**_
 
@@ -22,53 +22,53 @@ O que você aprenderá:
 
 # **Parte 2 - Hands On Oracle Autonomous Database**
 
-## **1️⃣ Criar de schema e preparação de ambiente**
+## **1️⃣ Criação de schema e preparação do ambiente**
 
-Utilize a instância do Oracle Autonomous criado no Hands On do OCI AI dataplatform
+Utilize a instância do Oracle Autonomous Database criada no hands-on do OCI AI Data Platform.
 
 ![Link AIDP](images/link_adb.png)
 
-Clique em database users
+Clique em **Database Users**.
 
 ![adb_instance](images/adb_instance.png)
 
-Clique em + Criar usuário, e crie o usuário AI, dê os grants conforme o print screen abaixo
+Clique em **+ Criar usuário**, crie o usuário `AI` e conceda os grants conforme a captura de tela abaixo.
 
-> **⚠️ ATENÇÃO:** A sugestão é utilizar a senha **WORKSHOPsec2019##**, contudo você pode escolher um outra senha se assim desejar. O restante das configurações vocês podem utilizar o padrão e clicar no botão create
+> **⚠️ ATENÇÃO:** A sugestão é utilizar a senha **WORKSHOPsec2019##**, contudo, você pode escolher outra senha se assim desejar. Para as demais configurações, você pode utilizar os valores padrão e clicar no botão **Create**.
 
 ![adb_user](images/adb_user.png)
 
-## **2️⃣ Configurar e orquestrar transformações utilizando procedures e oracle scheduler**
+## **2️⃣ Configurar e orquestrar transformações utilizando procedures e Oracle Scheduler**
 
-Usando o menu do canto superior esquerdo clique em SQL
+No menu do canto superior esquerdo, clique em **SQL**.
 
 ![sql_dev_link](images/sql_dev_link.png)
 
-Caso tenha concluido com sucesso o laboratório do AI Data platform, você deve conseguir visualizar os dois datasets replicados CUSTOMER_ORDERS e CUSTOMER_CLASS_AGG_REVIEW
+Caso tenha concluído com sucesso o laboratório do AI Data Platform, você deverá visualizar os dois datasets replicados: `CUSTOMERS_ORDERS` e `CUSTOMER_CLASS_AGG_REVIEW`.
 
 ![sql_dev_01](images/sql_dev_01.png)
 
-Clique e arraste o dataset CUSTOMER_ORDERS para o meio da tela, selecione a caixa "Selecionar" e clique em aplicar
+Clique e arraste o dataset `CUSTOMERS_ORDERS` para o centro da tela, selecione a caixa **Selecionar** e clique em **Aplicar**.
 
 ![sql_dev_02](images/sql_dev_02.png)
 
-Altere o grupo de consumidor para medium
+Altere o grupo de consumidores para **medium**.
 
 ![sql_dev_03](images/sql_dev_03.png)
 
-Clique no meio da tela e aperte ctrl + enter para executar a query
+Clique no centro da tela e pressione **Ctrl + Enter** para executar a query.
 
 ![sql_dev_04](images/sql_dev_04.png)
 
-Clique com o botão direito no dataset e escolha abrir
+Clique com o botão direito no dataset e escolha **Abrir**.
 
 ![sql_dev_05](images/sql_dev_05.png)
 
-Navegue, consulte os metadados do objeto e clique em fechar
+Navegue pelos dados, consulte os metadados do objeto e clique em **Fechar**.
 
 ![sql_dev_06](images/sql_dev_06.png)
 
-De volta ao worksheet, conceda alguns grants adicionais ao usuário AI; copie, cole e execute o bloco abaixo apertando f5
+De volta ao worksheet, conceda alguns grants adicionais ao usuário `AI`. Copie, cole e execute o bloco abaixo pressionando **F5**.
 
 ``` sql
 GRANT dwrole TO ai;
@@ -91,7 +91,7 @@ END;
 / 
 ```
 
-Agora crie e teste a procedure de replicação de datasets. Nosso objetivo é replicar as tabelas CUSTOMERS_ORDERS e CUSTOMER_CLASS_AGG_REVIEW do schema ADMIN para o schema AI
+Agora, crie e teste a procedure de replicação de datasets. O objetivo é replicar as tabelas `CUSTOMERS_ORDERS` e `CUSTOMER_CLASS_AGG_REVIEW` do schema `ADMIN` para o schema `AI`.
 
 Crie e teste a procedure de replicação de datasets
 
@@ -145,7 +145,7 @@ END;
 ```
 ![sql_dev_07](images/sql_dev_07.png)
 
-Agora clique no ícone do canto superior esquerdo e em progamando
+Agora, clique no ícone do canto superior esquerdo e selecione **Programação**.
 
 ![scheduler_link](images/scheduler_link.png)
 
@@ -158,7 +158,7 @@ END;
 ```
 ![scheduler_01](images/scheduler_01.png)
 
-Na aba modo de execução configure para executar de hora em hora a procedure e clique em criar
+Na aba **Modo de execução**, configure a procedure para ser executada de hora em hora e clique em **Criar**.
 
 ![scheduler_02](images/scheduler_02.png)
 
@@ -166,33 +166,33 @@ Execute o seu job
 
 ![scheduler_03](images/scheduler_03.png)
 
-Após a conclusão clique na aba de histórico e relatório para ter a visão completa das execuções e também potenciais erros
+Após a conclusão, clique na aba de histórico e relatório para obter uma visão completa das execuções e de possíveis erros.
 
 ![scheduler_04](images/scheduler_04.png)
 
 ## **3️⃣ Importar e configurar aplicação Select AI**
 
-Clique no icone do canto superior esquerdo e selecione APEX, faça o login novamente com o usuário ADMIN e a senha configurada na criação do Autonomous Database
+Clique no ícone do canto superior esquerdo e selecione APEX, faça o login novamente com o usuário ADMIN e a senha configurada na criação do Autonomous Database
 
-![apex_link](images/apex_link.png)
+![APEX_link](images/APEX_link.png)
 
-Clique no icone create workspace no canto direito da tela e selecione existing schema
+Clique no ícone create workspace no canto direito da tela e selecione existing schema
 
-![apex01](images/apex01.png)
+![APEX01](images/APEX01.png)
 
 Selecione o schema AI e coloque a senha do ambiente, recomendamos a senha conforme o print screen; Clique em create workspace
 
-![apex02](images/apex02.png)
+![APEX02](images/APEX02.png)
 
 Na parte inferior esquerda da tela, faça o logoff do ambiente
 
-![apex03](images/apex03.png)
+![APEX03](images/APEX03.png)
 
-Na tela do login, faça o login com o usuario AI e senha configurada na etapa anterior.
+Na tela do login, faça o login com o usuário AI e senha configurada na etapa anterior.
 
 Na sequência clique em SQL Workshop e SQL Commands
 
-![apex04](images/apex04.png)
+![APEX04](images/APEX04.png)
 
 Copie e cole o código abaixo (observação: vamos ter que fazer algumas alterações na sessão de create_credential conforme os ids e configurações do seu ambiente)
 
@@ -232,15 +232,15 @@ Na aba de token and keys, crie uma API Key, faça o download da chave privada e 
 
 ![oci02](images/oci02.png)
 
-Abaixo o exemplo de preenchimento do código que deve ser executado dentro do apex
+Abaixo o exemplo de preenchimento do código que deve ser executado dentro do APEX
 
-![apex05](images/apex05.png)
+![APEX05](images/APEX05.png)
 
 Agora vamos adicionar comentários à tabela CUSTOMERS_ORDERS para facilitar o uso do Select AI. No APEX clique em sql scripts
 
-![apex07](images/apex07.png)
+![APEX07](images/APEX07.png)
 
-Clique em create e cole o codigo abaixo. Dê o nome de comentarios_tabela e após isso, clique em run
+Clique em create e cole o código abaixo. Dê o nome de comentarios_tabela e após isso, clique em run
 
 ``` sql
 COMMENT ON TABLE AI.CUSTOMERS_ORDERS IS
@@ -340,25 +340,25 @@ COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.PREFERRED_CARD IS
 'Identificador do cartão preferido do cliente.';  
 ```
 
-Concluido o setup vamos clicar em App builder e import
+Concluído o setup, vamos clicar em App builder e import
 
-![apex06](images/apex06.png)
+![APEX06](images/APEX06.png)
 
-Faça o download do arquivo https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/autonomousdb/app_apex/selectai.zip e upload para o formulário; Clique next, depois import application, next, install supporting objects e por fim run application
+Faça o download do arquivo https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/autonomousdb/app_APEX/selectai.zip e upload para o formulário; Clique next, depois import application, next, install supporting objects e por fim run application
 
-![apex08](images/apex08.png)
+![APEX08](images/APEX08.png)
 
 O login será AI e a senha WORKSHOPsec2019##
 
-![apex09](images/apex09.png)
+![APEX09](images/APEX09.png)
 
-Selecione o oci_genai e clique no x
+Selecione `OCI_GENAI` e clique no x
 
-![apex10](images/apex10.png)
+![APEX10](images/APEX10.png)
 
 Pergunte: Qual a quantidade de ordens por delivery_type
 
-![apex11](images/apex11.png)
+![APEX11](images/APEX11.png)
 
 Outras perguntas que podem ser feitas
 - qual a quantidade de ordens por customer_class
@@ -367,9 +367,9 @@ Outras perguntas que podem ser feitas
 
 ## **4️⃣ Configurar e testar ORDS**
 
-De volta ao apex, vamos primeiramente configurar o data redaction para a coluna de email da nossa tabela CUSTOMERS_ORDERS. Clique em SQL Commands
+De volta ao APEX, vamos primeiramente configurar o data redaction para a coluna de email da nossa tabela CUSTOMERS_ORDERS. Clique em SQL Commands
 
-![apex12](images/apex12.png)
+![APEX12](images/APEX12.png)
 
 Copie e cole o comando abaixo
 
@@ -393,35 +393,35 @@ Faça um teste e veja que como estamos logado com o usuário AI temos acesso com
 select cust_first_name, cust_last_name, cust_email from customers_orders;
 ```
 
-![apex13](images/apex13.png)
+![APEX13](images/APEX13.png)
 
-Agora clique na aba de restfull services
+Agora clique na aba de RESTful Services
 
-![apex14](images/apex14.png)
+![APEX14](images/APEX14.png)
 
 Clique em Modules > create module, dê o nome de api e base path v1
 
-![apex15](images/apex15.png)
+![APEX15](images/APEX15.png)
 
-Na sequencia clique em create template e na uri template escreva consulta
+Na sequência clique em create template e na uri template escreva consulta
 
-![apex16](images/apex16.png)
+![APEX16](images/APEX16.png)
 
-Na sequencia, crie um handler e no source coloque 
+Na sequência, crie um handler e no source coloque 
 
 ``` sql
 select cust_first_name, cust_last_name, cust_email from customers_orders
 ```
 
-![apex17](images/apex17.png)
+![APEX17](images/APEX17.png)
 
-Copie e cole a URL no web browser, seus dados aparecerão, contudo o email estará nulo por conta da regra de redaction
+Copie e cole a URL no navegador web, seus dados aparecerão, contudo o e-mail estará nulo por conta da regra de redaction
 
-![apex18](images/apex18.png)
+![APEX18](images/APEX18.png)
 
 ## **✅ Laboratório finalizado!**
 
-Parabéns! Você concluiu o Hands On do **Oracle Autonomous**, aprendeu a utilizar as tabelas carregadas pelo AI Data platform para orquestrar e realizar outras diferentes transformações usando procedures e scheduler, importou e configurou uma aplicação APEX que demonstra o uso do Select AI e por fim criou um endpoint REST com uma regra de redaction.
+Parabéns! Você concluiu o Hands On do **Oracle Autonomous**, aprendeu a utilizar as tabelas carregadas pelo AI Data Platform para orquestrar e realizar outras diferentes transformações usando procedures e scheduler, importou e configurou uma aplicação APEX que demonstra o uso do Select AI e por fim criou um endpoint REST com uma regra de redaction.
 
 
 ## 👥 Agradecimentos

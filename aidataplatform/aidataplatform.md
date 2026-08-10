@@ -2,23 +2,23 @@
 
 ## 🎯 **Objetivos**
 
-Descubrir como utilizar de forma prática o serviço OCI Data Platform, criando um pipeline fim a fim; Importante e trabalhando com arquivos csv, realizando transformações, criando a estrutura medalhão e disponibilizando os resultados finais em um banco de dados autonomous. 
+Descobrir como utilizar de forma prática o serviço OCI AI Data Platform, criando um pipeline de ponta a ponta, importando e trabalhando com arquivos CSV, realizando transformações, criando a estrutura medalhão e disponibilizando os resultados finais em um Autonomous Database. 
 
 O que você aprenderá:
 
 - Preparar a infraestrutura do OCI AI Data Platform.
 - Criar catálogo, volume, workspace e cluster Spark.
-- Carregar um dataset csv para o AIDP.
+- Carregar um dataset CSV para o AIDP.
 - Realizar verificações de qualidade e análise exploratória dos dados.
 - Criar as camadas da arquitetura medalhão com PySpark.
-- Replicar datasets já processados para o Autonomous DB
+- Replicar datasets já processados para o Autonomous Database.
 - Orquestrar notebooks sequencialmente por meio de Workflow.
 
 ### _**Aproveite sua experiência na Oracle Cloud!**_
 
 ## 📌 Introdução
 
->**O laboratório implementa um pipeline de dados em camadas. O processamento é realizado no OCI AI Data Platform com notebooks e Spark. Nesse workshop iremos trabalhar um dataset csv, processar os dados usando o AI DP e por fim disponibilizar os dados em um Banco de Dados Autonomous em OCI** 
+> **O laboratório implementa um pipeline de dados em camadas. O processamento é realizado no OCI AI Data Platform com notebooks e Spark. Neste workshop, trabalharemos um dataset CSV, processaremos os dados usando o AIDP e, por fim, disponibilizaremos os dados em um Autonomous Database na OCI.** 
 
 # **Parte 1 - Hands On AI Data Platform**
 
@@ -29,7 +29,7 @@ Antes de iniciar o Hands On, prepare os recursos necessários:
 1.  Crie **uma instância AI Data Platform**.
 ![Link AIDP](images/link_aidp.png)
 
-Dê um nome a sua instância, seu workspace e escolha as policies standard. Não há necessidade de preenchimento da sessão que contém o Autonomous AI Lakehouse
+Dê um nome à sua instância e ao seu workspace e escolha as políticas padrão. Não há necessidade de preencher a seção que contém o Autonomous AI Lakehouse.
 
 ![Form01](images/form01.png)
 
@@ -37,29 +37,29 @@ Dê um nome a sua instância, seu workspace e escolha as policies standard. Não
 
 > **⚠️ ATENÇÃO:** A criação da sua instância AIDP deve demorar cerca de uns 10 minutos para conclusão.
 
-2.  Crie **um autonomous db**
+2.  Crie **um Autonomous Database**
 
 ![Link ADB](images/link_adb.png)
 
-Crie um autonomous utilizando as seguintes configurações.
+Crie um Autonomous Database utilizando as seguintes configurações.
 
 ![Form01_ADB](images/form01_adb.png)
 
-> **⚠️ ATENÇÃO:** Garanta que a versão do Autonomous seja 26ai.
+> **⚠️ ATENÇÃO:** Garanta que a versão do Autonomous Database seja 26ai.
 
 ![Form02_ADB](images/form02_adb.png)
 
-> **⚠️ ATENÇÃO:** A sugestão é utilizar a senha **WORKSHOPsec2019##**, contudo você pode escolher um outra senha se assim desejar. O restante das configurações vocês podem utilizar o padrão e clicar no botão create
+> **⚠️ ATENÇÃO:** A sugestão é utilizar a senha **WORKSHOPsec2019##**; contudo, você pode escolher outra senha, se desejar. O restante das configurações pode permanecer no padrão; em seguida, clique em **Create**.
 
 ![Form03_ADB](images/form03_adb.png)
 
-> **⚠️ ATENÇÃO:** A criação da sua instância Autonomous Database deve demorar cerca de uns 5 minutos para conclusão.
+> **⚠️ ATENÇÃO:** A criação da sua instância do Autonomous Database deve demorar cerca de 5 minutos para ser concluída.
 
 3.  Retorne à instância do AIDP e crie **um catálogo Standard**.
 
 ![caminho_aidp01](images/caminho_aidp01.png)
 
-Clique em Master Catalog, depois em create catalog, dê o nome de demo para seu catalogo e clique em create
+Clique em **Master Catalog**, depois em **Create Catalog**, dê o nome **demo** ao seu catálogo e clique em **Create**.
 
 ![catalog_create](images/catalog_create.png)
 
@@ -75,17 +75,17 @@ Clique em Master Catalog, depois em create catalog, dê o nome de demo para seu 
 
 ![compute_spark01](images/compute_spark01.png)
 
-7.  Faça a integração do Autonomous com o AIDP, através da aba Master Catalog
+7.  Faça a integração do Autonomous Database com o AIDP, através da aba Master Catalog
 
 Clique em create catalog, escolha o tipo external.
 
-Na tela de detalhes do seu autonomous database, clique em database connection e faça o download de sua wallet
+Na tela de detalhes do seu Autonomous Database, clique em **Database Connection** e faça o download de sua wallet
 
 ![autonomous_connection](images/autonomous_connection.png)
 
 > **⚠️ ATENÇÃO:** A sugestão é utilizar a senha **WORKSHOPsec2019##**, contudo você pode escolher um outra senha se assim desejar.
 
-Dê o nome para o catálogo de adb01, faça o upload da wallet para o formulário do AIDP, escolha o serviço medium e faça o preenchimento das outras informações conforme o print abaixo
+Dê o nome de **adb01** ao catálogo, faça o upload da wallet no formulário do AIDP, escolha o serviço **Medium** e preencha as demais informações conforme o print abaixo.
 
 ![aidp_adb_connect](images/aidp_adb_connect.png)
 
@@ -97,7 +97,7 @@ No canto esquerdo da tela, clique em workspace01, e crie um novo notebook clican
 
 ![notebook01](images/notebook01.png)
 
-Renomeie o seu notebook para notebook_bronze (clique no lapis, mude o nome e aperte enter) e cole o código abaixo dentro da célula. Após colar o mesmo, aperte crlt + s para salvar o mesmo
+Renomeie o seu notebook para **notebook_bronze** (clique no **lápis**, altere o nome e pressione **Enter**) e cole o código abaixo na célula. Após colar o código, pressione **Ctrl + S** para salvá-lo.
 
 ![notebook02](images/notebook02.png)
 
@@ -108,7 +108,7 @@ import urllib.request
 orders_url = "https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/aidataplatform/arquivos_csv/orders.csv"
 customers_url = "https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/aidataplatform/arquivos_csv/customers.csv"
 
-# Substitua pelo path do volume criado no catálogo
+# Substitua pelo caminho do volume criado no catálogo
 tmp_dir = "/Volumes/demo/default/vol01"
 os.makedirs(tmp_dir, exist_ok=True)
 
@@ -160,15 +160,15 @@ Para rodar o seu notebook, anexe um cluster spark e clique em run all
 
 ![notebook03](images/notebook03.png)
 
-Caso tenha sucesso o seguinte log será apresentado na tela
+Caso tenha sucesso, o seguinte log será apresentado na tela.
 
 ![notebook04](images/notebook04.png)
 
 ### **➡️ Análise exploratória da camada Bronze**
 
-Após o carregamento, clique no botão **+add a new cell** (logo abaixo do parágrafo existente no seu notebook) para adicionar um novo parágrafo e execute verificações de estrutura, amostras, valores nulos, estatísticas e duplicidades.
+Após o carregamento, clique no botão **+ Add a new cell** (logo abaixo do parágrafo existente no notebook) para adicionar uma nova célula e executar verificações de estrutura, amostras, valores nulos, estatísticas e duplicidades.
 
-Copie e cole o código abaixo no novo parágrafo do notebook e aperte ctrl + enter para executar apenas esse parágrafo do notebook
+Copie e cole o código abaixo em uma nova célula do notebook e pressione **Ctrl + Enter** para executar apenas essa célula.
 
 ``` python
 print("=== DESCRIBE TABLE: demo.bronze.orders ===")
@@ -228,12 +228,12 @@ ORDER BY cnt DESC
 """).show(truncate=False)
 ```
 
-Caso tenha sucesso na execução os seguintes outputs aparecerão com a análise dos dados recém importados
+Caso a execução tenha sucesso, os seguintes resultados aparecerão com a análise dos dados recém-importados.
 ![notebook05](images/notebook05.png)
 
 ## **3️⃣ Criação da camada Silver**
 
-Seguindo os mesmos passos da etapa anterior, crie um novo notebook para a camada Silver. Dê o nome de notebook_silver. Nesta etapa, as tabelas `orders` e `customers` da Bronze são combinadas pelo campo `CUSTOMER_ID`.
+Seguindo os mesmos passos da etapa anterior, crie um novo notebook para a camada Silver. Dê o nome de **notebook_silver**. Nesta etapa, as tabelas `orders` e `customers` da Bronze são combinadas pelo campo `CUSTOMER_ID`.
 
 ``` python
 from pyspark.sql.functions import col
@@ -277,7 +277,7 @@ df_silver.show(10, truncate=False)
 
 ### **➡️ Análise exploratória da Silver**
 
-Conforme o notebook anterior, crie um novo parágrafo ainda dentro do notebook_silver e cole o conteudo abaixo
+Conforme o notebook anterior, crie uma nova célula ainda dentro do **notebook_silver** e cole o conteúdo abaixo:
 ``` python
 import pyspark.sql.functions as F
 
@@ -310,7 +310,7 @@ df_analyze.describe().show(truncate=False)
 
 ## **4️⃣ Criação da camada Gold**
 
-Seguindo os mesmos passos da etapa anterior, crie um novo notebook chamado notebook_gold. A camada Gold normaliza `CUSTOMER_CLASS` e agrega os pedidos para produzir indicadores de quantidade, vendas e ticket médio.
+Seguindo os mesmos passos da etapa anterior, crie um novo notebook chamado **notebook_gold**. A camada Gold normaliza `CUSTOMER_CLASS` e agrega os pedidos para produzir indicadores de quantidade, vendas e ticket médio.
 
 ``` python
 import pyspark.sql.functions as F
@@ -359,11 +359,11 @@ spark.table("demo.gold.customer_class_agg_review").show(truncate=False)
 
 ## **5️⃣ Escrita no Autonomous Database**
 
-Por fim vamos replicar e escrever as tabelas `demo.silver.customers_orders` e `demo.gold.customer_class_agg_review` para o autonomous que mapeamos anteriormente. Outros exemplos podem ser encontrados na página  https://github.com/oracle-samples/oracle-aidp-samples/tree/main
+Por fim, vamos replicar e escrever as tabelas `demo.silver.customers_orders` e `demo.gold.customer_class_agg_review` no Autonomous Database mapeado anteriormente. Outros exemplos podem ser encontrados na página https://github.com/oracle-samples/oracle-aidp-samples/tree/main.
 
-Crie um novo notebook e dê o nome de notebook_adb, copie e cole o código abaixo.
+Crie um novo notebook e dê o nome de **notebook_adb**; copie e cole o código abaixo.
 
-Execute e teremos os dados replicados para o Autonomous previamente configurado com o AIDP
+Execute o notebook e os dados serão replicados para o Autonomous Database previamente configurado com o AIDP.
 
 ``` python
 # ------------------------------------------------------------
@@ -393,7 +393,7 @@ print("Gold carregada com sucesso!")
 ```
 ![notebook09](images/notebook09.png)
 
-Apenas para teste, crie um novo parágrafo e faça uma query nas tabelas recém carregadas para dentro do Autonomous. Copie e cole o código abaixo
+Apenas para teste, crie uma nova célula e faça uma consulta nas tabelas recém-carregadas no Autonomous Database. Copie e cole o código abaixo:
 
 ``` python
 alh_df_silver = spark.read.format("aidataplatform") \
@@ -414,10 +414,10 @@ alh_df_gold.show()
 
 ## **6️⃣ Orquestração com Workflow**
 
-Por fim clique no canto esquerdo em **Workflow \> Create Job**, dê o nome de job01 e configure as 4 atividades em sequência, associando cada uma aos notebooks criados para as camadas:
+Por fim, clique no canto esquerdo em **Workflow > Create Job**, dê o nome de **job01** e configure as quatro atividades em sequência, associando cada uma aos notebooks criados para as camadas:
 
 ``` text
-notebook_bronze  ->  notebook_silver  ->  notebook_gold > notebook_adb
+notebook_bronze  ->  notebook_silver  ->  notebook_gold  ->  notebook_adb
 ```
 
 ![workflow01](images/workflow01.png)
@@ -428,7 +428,7 @@ Execute o workflow, acompanhe a execução e valide os resultados de cada ativid
 
 ![workflow03](images/workflow03.png)
 
-Caso tenhamos a intenção de agendar a execução do workflow podemos fazer na aba de configuração do job, clicando em details e schedule. O Job também pode ser acionado através de APIs e SDKs 
+Caso haja interesse em agendar a execução do workflow, isso pode ser feito na aba de configuração do job, clicando em **Details** e **Schedule**. O job também pode ser acionado por meio de APIs e SDKs.
 
 ![workflow04](images/workflow04.png)
 
@@ -436,14 +436,14 @@ Caso tenhamos a intenção de agendar a execução do workflow podemos fazer na 
 
 ## **✅ Laboratório finalizado!**
 
-Parabéns! Você concluiu o Hands On do **OCI AI Data Platform (AIDP)**, construindo as camadas **Bronze**, **Silver** e **Gold** e orquestrando as atividades por meio de um **Workflow**.
+Parabéns! Você concluiu o hands-on do **OCI AI Data Platform (AIDP)**, construindo as camadas **Bronze**, **Silver** e **Gold** e orquestrando as atividades por meio de um **Workflow**.
 
 
 ## 👥 Agradecimentos
 
 - **Autores** - Caio Oliveira
 - **Autores Contribuintes** - Isabelle Anjos
-- **Última Atualização Por/Data** - Agosto 2026
+- **Última atualização** - Agosto de 2026
 
 ## 🛡️ Declaração de Porto Seguro (Safe Harbor)
 
