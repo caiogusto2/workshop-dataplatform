@@ -219,17 +219,7 @@ Antes de iniciar, recomenda-se possuir:
 
 ## ▶️ Como executar o workshop
 
-### 1. Clone o repositório
-
-```bash
-git clone https://github.com/caiogusto2/workshop-dataplatform.git
-```
-
-Entre no diretório:
-
-```bash
-cd workshop-dataplatform
-```
+### 1. Acessa esse github como página web: https://caiogusto2.github.io/workshop-dataplatform
 
 ### 2. Prepare o ambiente
 
