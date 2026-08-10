@@ -172,27 +172,27 @@ Após a conclusão, clique na aba de histórico e relatório para obter uma vis�
 
 ## **3️⃣ Importar e configurar aplicação Select AI**
 
-Clique no ícone do canto superior esquerdo e selecione APEX, faça o login novamente com o usuário ADMIN e a senha configurada na criação do Autonomous Database
+Clique no ícone do canto superior esquerdo e selecione apex, faça o login novamente com o usuário ADMIN e a senha configurada na criação do Autonomous Database
 
-![APEX_link](images/APEX_link.png)
+![apex_link](images/apex_link.png)
 
 Clique no ícone create workspace no canto direito da tela e selecione existing schema
 
-![APEX01](images/APEX01.png)
+![apex01](images/apex01.png)
 
 Selecione o schema AI e coloque a senha do ambiente, recomendamos a senha conforme o print screen; Clique em create workspace
 
-![APEX02](images/APEX02.png)
+![apex02](images/apex02.png)
 
 Na parte inferior esquerda da tela, faça o logoff do ambiente
 
-![APEX03](images/APEX03.png)
+![apex03](images/apex03.png)
 
 Na tela do login, faça o login com o usuário AI e senha configurada na etapa anterior.
 
 Na sequência clique em SQL Workshop e SQL Commands
 
-![APEX04](images/APEX04.png)
+![apex04](images/apex04.png)
 
 Copie e cole o código abaixo (observação: vamos ter que fazer algumas alterações na sessão de create_credential conforme os ids e configurações do seu ambiente)
 
@@ -232,13 +232,13 @@ Na aba de token and keys, crie uma API Key, faça o download da chave privada e 
 
 ![oci02](images/oci02.png)
 
-Abaixo o exemplo de preenchimento do código que deve ser executado dentro do APEX
+Abaixo o exemplo de preenchimento do código que deve ser executado dentro do apex
 
-![APEX05](images/APEX05.png)
+![apex05](images/apex05.png)
 
-Agora vamos adicionar comentários à tabela CUSTOMERS_ORDERS para facilitar o uso do Select AI. No APEX clique em sql scripts
+Agora vamos adicionar comentários à tabela CUSTOMERS_ORDERS para facilitar o uso do Select AI. No apex clique em sql scripts
 
-![APEX07](images/APEX07.png)
+![apex07](images/apex07.png)
 
 Clique em create e cole o código abaixo. Dê o nome de comentarios_tabela e após isso, clique em run
 
@@ -342,23 +342,23 @@ COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.PREFERRED_CARD IS
 
 Concluído o setup, vamos clicar em App builder e import
 
-![APEX06](images/APEX06.png)
+![apex06](images/apex06.png)
 
-Faça o download do arquivo https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/autonomousdb/app_APEX/selectai.zip e upload para o formulário; Clique next, depois import application, next, install supporting objects e por fim run application
+Faça o download do arquivo https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/autonomousdb/app_apex/selectai.zip e upload para o formulário; Clique next, depois import application, next, install supporting objects e por fim run application
 
-![APEX08](images/APEX08.png)
+![apex08](images/apex08.png)
 
 O login será AI e a senha WORKSHOPsec2019##
 
-![APEX09](images/APEX09.png)
+![apex09](images/apex09.png)
 
 Selecione `OCI_GENAI` e clique no x
 
-![APEX10](images/APEX10.png)
+![apex10](images/apex10.png)
 
 Pergunte: Qual a quantidade de ordens por delivery_type
 
-![APEX11](images/APEX11.png)
+![apex11](images/apex11.png)
 
 Outras perguntas que podem ser feitas
 - qual a quantidade de ordens por customer_class
@@ -367,9 +367,9 @@ Outras perguntas que podem ser feitas
 
 ## **4️⃣ Configurar e testar ORDS**
 
-De volta ao APEX, vamos primeiramente configurar o data redaction para a coluna de email da nossa tabela CUSTOMERS_ORDERS. Clique em SQL Commands
+De volta ao apex, vamos primeiramente configurar o data redaction para a coluna de email da nossa tabela CUSTOMERS_ORDERS. Clique em SQL Commands
 
-![APEX12](images/APEX12.png)
+![apex12](images/apex12.png)
 
 Copie e cole o comando abaixo
 
@@ -393,19 +393,19 @@ Faça um teste e veja que como estamos logado com o usuário AI temos acesso com
 select cust_first_name, cust_last_name, cust_email from customers_orders;
 ```
 
-![APEX13](images/APEX13.png)
+![apex13](images/apex13.png)
 
 Agora clique na aba de RESTful Services
 
-![APEX14](images/APEX14.png)
+![apex14](images/apex14.png)
 
 Clique em Modules > create module, dê o nome de api e base path v1
 
-![APEX15](images/APEX15.png)
+![apex15](images/apex15.png)
 
 Na sequência clique em create template e na uri template escreva consulta
 
-![APEX16](images/APEX16.png)
+![apex16](images/apex16.png)
 
 Na sequência, crie um handler e no source coloque 
 
@@ -413,15 +413,15 @@ Na sequência, crie um handler e no source coloque
 select cust_first_name, cust_last_name, cust_email from customers_orders
 ```
 
-![APEX17](images/APEX17.png)
+![apex17](images/apex17.png)
 
 Copie e cole a URL no navegador web, seus dados aparecerão, contudo o e-mail estará nulo por conta da regra de redaction
 
-![APEX18](images/APEX18.png)
+![apex18](images/apex18.png)
 
 ## **✅ Laboratório finalizado!**
 
-Parabéns! Você concluiu o Hands On do **Oracle Autonomous**, aprendeu a utilizar as tabelas carregadas pelo AI Data Platform para orquestrar e realizar outras diferentes transformações usando procedures e scheduler, importou e configurou uma aplicação APEX que demonstra o uso do Select AI e por fim criou um endpoint REST com uma regra de redaction.
+Parabéns! Você concluiu o Hands On do **Oracle Autonomous**, aprendeu a utilizar as tabelas carregadas pelo AI Data Platform para orquestrar e realizar outras diferentes transformações usando procedures e scheduler, importou e configurou uma aplicação apex que demonstra o uso do Select AI e por fim criou um endpoint REST com uma regra de redaction.
 
 
 ## 👥 Agradecimentos
