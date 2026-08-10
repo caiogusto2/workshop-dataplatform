@@ -26,7 +26,7 @@ O que você aprenderá:
 
 Antes de iniciar o Hands On, prepare os recursos necessários:
 
-1.  Crie **uma instância AI Data Platform**, garanta que esta fazendo a criação da instância na região de São Paulo - GRU.
+1.  Crie **uma instância AI Data Platform**.
 ![Link AIDP](images/link_aidp.png)
 
 Dê um nome a sua instância, seu workspace e escolha as policies standard. Não há necessidade de preenchimento da sessão que contém o Autonomous AI Lakehouse

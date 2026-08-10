@@ -1,326 +1,434 @@
-# Oracle 23ai Vector Search
+# Oracle 26ai Autonomous Database
 
 ## 🎯 **Objetivos**
 
-Demonstrar de forma prática como utilizar a funcionalidade de busca vetorial do Oracle 23c AI Vector Search.
+Demonstrar de forma prática como utilizar algumas das funcionalidades do Oracle Autonomous Database com o objetivo de atender workloads de data warehouse
 
 O que você aprenderá:
 
-- Criar e configurar um banco de dados autônomo (Autonomous Database) no Oracle Cloud Infrastructure (OCI).
-- Utilizar a funcionalidade de busca vetorial para otimizar consultas e análises em PDFs.
-- Explorar as vantagens do Oracle 23c AI na integração de dados relacionais e semânticos.
+- Criar e configurar novo schemas e usuários no Oracle Autonomous DB
+- Realizar e orquestrar transformações utilizando procedures e oracle scheduler
+- Importar e configurar aplicação Select AI
+- Configurar e testar data redaction
+- Configurar ORDS para consultas sobre datasets 
 
->### ⚠️ **ATENÇÃO**:
->
->Antes de continuar, realize o download dos arquivos abaixo.
-><br>
-><br>
->- **Download dos PDFs**: Qualquer PDF pode ser utilizado, mas, para fins didáticos deste workshop utilizaremos como nosso exemplo o guia de [Normas Ambientais da Marinha](https://www.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-401.pdf)
->- **Download da Aplicação**: [Aplicação APEX](https://objectstorage.us-ashburn-1.oraclecloud.com/p/giVj_Pu_1DNcojoKoLWZnEbL2oqQANGFCEGCuIE8Mm1hRaXCMhUkkKdu4xqi9CjB/n/idi1o0a010nx/b/bucket-prodesp/o/f102.sql)
+>### ⚠️ **ATENÇÃO**: Recomendamos que antes de iniciar esse workshop, conclua o hands on de AI Data Platform
 
 ### _**Aproveite sua experiência na Oracle Cloud!**_
 
 ## 📌 Introdução
 
->**Com o Oracle 23c AI, o AI Vector Search integra vetores ao Oracle Database, eliminando bancos especializados e evitando a fragmentação de dados. Essa tecnologia permite buscas por similaridade combinadas com SQL simples, potencializando modelos de linguagem (LLMs) com contexto adicional. Inclui novo tipo de dado vetorial, índices específicos e extensões SQL para análises avançadas diretamente no banco de dados.** 
+>**Este hands-on apresenta, de forma prática, como o Oracle Autonomous Database 26ai pode complementar a AI Data Platform, oferecendo recursos para atender workloads de Data Warehouse de maneira integrada, segura e automatizada. Ao longo do workshop, você aprenderá a criar e configurar schemas e usuários, realizar e orquestrar transformações de dados com procedures e Oracle Scheduler, importar e configurar aplicações com Select AI, implementar Data Redaction para proteção de informações sensíveis e configurar o ORDS para disponibilizar consultas sobre datasets. A proposta é proporcionar uma experiência prática com funcionalidades essenciais do Autonomous Database dentro da Oracle Cloud.** 
 
-![Semantic](images/semantic.png)
+# **Parte 2 - Hands On Oracle Autonomous Database**
 
-Referência: [Announcing Oracle Database 23ai : General Availability
-](https://blogs.oracle.com/database/post/oracle-23ai-now-generally-available)
+## **1️⃣ Criar de schema e preparação de ambiente**
 
-### ➡️ **O que é Vector Database?**
+Utilize a instância do Oracle Autonomous criado no Hands On do OCI AI dataplatform
 
-> Um banco de dados vetorial é qualquer banco de dados que pode armazenar e gerenciar embeddings vetoriais de forma nativa e lidar com os dados não estruturados que eles descrevem, como documentos, imagens, vídeos ou áudios.
+![Link AIDP](images/link_adb.png)
 
+Clique em database users
 
-### ➡️ **Como o Oracle AI Vector Search revoluciona a busca de dados semânticos no Oracle Database?**
+![adb_instance](images/adb_instance.png)
 
-> O Oracle AI Vector Search permite criar tabelas com o novo tipo de dado VECTOR, armazenando vetores diretamente no banco de dados. É possível inserir vetores com INSERT, carregar dados usando SQL Loader ou Data Pump, e criar índices para otimizar buscas em embeddings. Novas funções SQL, como as de cálculo de distância vetorial, facilitam a análise de vetores, enquanto operadores adicionais permitem criar, converter e descrever vetores, além de realizar chunking e embeddings de dados de forma eficiente.
+Clique em + Criar usuário, e crie o usuário AI, dê os grants conforme o print screen abaixo
 
+> **⚠️ ATENÇÃO:** A sugestão é utilizar a senha **WORKSHOPsec2019##**, contudo você pode escolher um outra senha se assim desejar. O restante das configurações vocês podem utilizar o padrão e clicar no botão create
 
-### ➡️ **Como o Oracle APEX revoluciona o desenvolvimento de aplicações no Oracle Database?**
+![adb_user](images/adb_user.png)
 
->**O Oracle APEX (Application Express) é uma plataforma de desenvolvimento low-code que permite a criação rápida e fácil de aplicações seguras, escaláveis e altamente responsivas diretamente no Oracle Database, sem a necessidade de infraestrutura complexa.** 
+## **2️⃣ Configurar e orquestrar transformações utilizando procedures e oracle scheduler**
 
-> Com o Oracle APEX, desenvolvedores podem criar aplicações empresariais modernas por meio de uma interface intuitiva que combina design visual, componentes integrados e funcionalidades avançadas, como gráficos interativos, relatórios dinâmicos e dashboards. O APEX aproveita as capacidades nativas do Oracle Database, como segurança, alta disponibilidade e desempenho, permitindo a criação de workspaces, o upload de aplicações e a integração com serviços externos via credenciais e APIs. Com poucos cliques, é possível importar arquivos SQL, configurar parâmetros de segurança e realizar customizações rápidas e eficientes.
+Usando o menu do canto superior esquerdo clique em SQL
 
-<br>
+![sql_dev_link](images/sql_dev_link.png)
 
-### **Recursos e Suporte**:
+Caso tenha concluido com sucesso o laboratório do AI Data platform, você deve conseguir visualizar os dois datasets replicados CUSTOMER_ORDERS e CUSTOMER_CLASS_AGG_REVIEW
 
-- **Documentação da Oracle Cloud**: [Getting started with vectors in 23ai](https://blogs.oracle.com/coretec/post/getting-started-with-vectors-in-23ai)
-- **Tutoriais**: [Oracle Database 23ai - Oracle AI Vector Search & Retrieval Augmented Generation (RAG) with Oracle APEX](https://www.linkedin.com/pulse/oracle-database-23ai-ai-vector-search-retrieval-augmented-rao-bqkcf/)
+![sql_dev_01](images/sql_dev_01.png)
 
+Clique e arraste o dataset CUSTOMER_ORDERS para o meio da tela, selecione a caixa "Selecionar" e clique em aplicar
 
-### _**Aproveite sua experiência na Oracle Cloud!**_
+![sql_dev_02](images/sql_dev_02.png)
 
+Altere o grupo de consumidor para medium
 
-## 1️⃣ Validação de Região
+![sql_dev_03](images/sql_dev_03.png)
 
-Faça o login no Oracle Cloud Infrastructure (OCI) e valide se a região de Chicago se encontra disponível para uso.
+Clique no meio da tela e aperte ctrl + enter para executar a query
 
-   ![Validate Region](images/validate-region.png " ")
+![sql_dev_04](images/sql_dev_04.png)
 
+Clique com o botão direito no dataset e escolha abrir
 
-## 2️⃣ Criação de Autonomous Database
+![sql_dev_05](images/sql_dev_05.png)
 
-Clique no menu **(☰)** e selecione **Database ⮕ Autonomous Data Warehouse**.
+Navegue, consulte os metadados do objeto e clique em fechar
 
-![Autonomous Acess](images/autonomous-acess.png)
+![sql_dev_06](images/sql_dev_06.png)
 
-Verifique se está no compartimento **root**. Faça a criação do serviço **somente** neste compartimento.
+De volta ao worksheet, conceda alguns grants adicionais ao usuário AI; copie, cole e execute o bloco abaixo apertando f5
 
-> **ATENÇÃO**: Antes de continuar verifique se está no compartimento **ROOT** conforme indicado abaixo.
+``` sql
+GRANT dwrole TO ai;
+GRANT unlimited tablespace TO ai;
+GRANT READ, WRITE ON DIRECTORY data_pump_dir TO ai;
+GRANT EXECUTE ON DBMS_CLOUD TO ai;
+GRANT CREATE PROPERTY GRAPH TO ai;
+GRANT EXECUTE ON DBMS_LOCK TO ai;
+GRANT EXECUTE ON DBMS_CLOUD_AI TO ai;
+GRANT EXECUTE ON SYS.DBMS_REDACT TO AI;
+GRANT ADMINISTER REDACTION POLICY TO AI;
 
-![Compartment Root](images/compartment-root.png)
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE(
+    host => '*',
+    ace => xs$ace_type(privilege_list => xs$name_list('connect'),
+                       principal_name => 'ai',
+                       principal_type => xs_acl.ptype_db));
+END;
+/ 
+```
 
-Na página de gestão de Autonomous Databases, clique em **Create Autonomous Database**.
-  
-![Create Autonomous](images/create-autonomous.png)
+Agora crie e teste a procedure de replicação de datasets. Nosso objetivo é replicar as tabelas CUSTOMERS_ORDERS e CUSTOMER_CLASS_AGG_REVIEW do schema ADMIN para o schema AI
 
-Escolha a versão 23ai para o banco de dados:
+Crie e teste a procedure de replicação de datasets
 
-![Create 23AI](images/create-23ai.png)
-
-Utilize a senha recomendada: **WORKSHOPsec2019##** . Selecione **secure access from everywhere** e clique em **Create Autonomous Database**:
-
-> **ATENÇÃO**: Verifique se utilizou a senha recomendada **WORKSHOPsec2019##**
-
-![Secure Acess](images/secure-acess.png)
-
-Vá para o próximo laboratório.
-
-> **Status do Autonomous Database:**
-> <br>
-> <br>
-> - Ícone amarelo = Em criação; 
-> - Ícone verde = Pronto para uso;
-
-![Yellow ADW](images/yellow-adw.png)
-![Green ADW](images/green-adw.png)
-
-## 3️⃣ Configurando o Autonomous Database
-
-Quando o serviço estiver com o ícone verde, clique no em **Database Actions ⮕ SQL**:
-![Database Actions](images/database-actions.png)
-
-Feche todos os tutoriais que aparecerão na página.
-<br>
-
-Em seguida, **copie, cole e execute os comandos abaixo conforme indicado na imagem**:
-
-    <copy>  
-        --Criação de credencial
+``` sql
+CREATE OR REPLACE PROCEDURE ADMIN.REFRESH_AI_TABLES
+AS
+BEGIN
+    -- Drop AI.CUSTOMER_ORDERS if it exists
     BEGIN
-        DBMS_CLOUD.CREATE_CREDENTIAL(
-            credential_name => 'OBJ_STORE_CRED',
-            username => 'oracleidentitycloudservice/CAIO.OLIVEIRA@ORACLE.COM',
-            password => 'teste'
-        );
+        EXECUTE IMMEDIATE 'DROP TABLE AI.CUSTOMERS_ORDERS PURGE';
+    EXCEPTION
+        WHEN OTHERS THEN
+            IF SQLCODE != -942 THEN
+                RAISE;
+            END IF;
     END;
-    /
 
-    --Download de Modelo onnx do object storage para diretorio autonomous
-    begin
-    dbms_cloud.get_object(
-        credential_name => 'OBJ_STORE_CRED'
-        , object_uri => 'https://objectstorage.sa-saopaulo-1.oraclecloud.com/p/nS9blF5U2ETiZT7YKZ_zrXtPOEH2Xf22TbdlpK99xZIEPmZedx4_eFBX4khYykmw/n/idi1o0a010nx/b/TDC/o/intfloatmodelsmall.onnx'
-        , directory_name => 'DATA_PUMP_DIR'
-        , file_name => 'intfloatmodelsmall.onnx'
-    );
-    end;
-    /
+    -- Recreate AI.CUSTOMER_ORDERS
+    EXECUTE IMMEDIATE '
+        CREATE TABLE AI.CUSTOMERS_ORDERS AS
+        SELECT *
+        FROM ADMIN.CUSTOMERS_ORDERS
+    ';
 
-    --Criação de usuário/schema para import do modelo e criação da aplicação
-    create user demo identified by "WORKSHOPsec2019##";
-    grant dwrole to demo;
-    grant unlimited tablespace to demo;
-    grant read, write on directory data_pump_dir to demo;
+    -- Drop AI.CUSTOMER_CLASS_AGG_REVIEW if it exists
+    BEGIN
+        EXECUTE IMMEDIATE 'DROP TABLE AI.CUSTOMER_CLASS_AGG_REVIEW PURGE';
+    EXCEPTION
+        WHEN OTHERS THEN
+            IF SQLCODE != -942 THEN
+                RAISE;
+            END IF;
+    END;
 
-    --Import de modelo onnx para autonomous
-    EXECUTE dbms_vector.load_onnx_model('DATA_PUMP_DIR', 'intfloatmodelsmall.onnx', 'demo.doc_model', JSON('{"function" : "embedding", "embeddingOutput" : "embedding" , "input": {"input": ["DATA"]}}'));
-    commit;
+    -- Recreate AI.CUSTOMER_CLASS_AGG_REVIEW
+    EXECUTE IMMEDIATE '
+        CREATE TABLE AI.CUSTOMER_CLASS_AGG_REVIEW AS
+        SELECT *
+        FROM ADMIN.CUSTOMER_CLASS_AGG_REVIEW
+    ';
 
-    </copy>
+END REFRESH_AI_TABLES;
+/
+```
 
-Execute conforme indicado abaixo:
+``` sql
+BEGIN
+    ADMIN.REFRESH_AI_TABLES;
+END;
+/
+```
+![sql_dev_07](images/sql_dev_07.png)
 
-![Execute Code](images\execute-code.png)
+Agora clique no ícone do canto superior esquerdo e em progamando
 
+![scheduler_link](images/scheduler_link.png)
 
-## 4️⃣ Criação de Workspace e Import de aplicação em ambiente APEX
+Clique em + Criar job, dê o nome de AI_Refresh, selecione a classe sys.medium e cole o bloco abaixo
 
-Para acessar a URL da instância APEX na Console do Oracle Cloud Infrastructure (OCI), siga os passos a seguir. 
+``` sql
+BEGIN
+    ADMIN.REFRESH_AI_TABLES;
+END;
+```
+![scheduler_01](images/scheduler_01.png)
 
-Inicialmente, retorne ao console da OCI. Em seguida, navegue até a página do seu Autonomous Database. Dentro da página da instância do banco de dados, localize e clique na opção **"Tool Configuration"**. Lá, você encontrará a URL da instância APEX. **Copie essa URL e abra em seu navegador.**
+Na aba modo de execução configure para executar de hora em hora a procedure e clique em criar
 
-   ![Tool Configuration](images/tool-config.png)
+![scheduler_02](images/scheduler_02.png)
 
-Na página que será aberta ao acessar a URL da instância APEX, **insira a senha de acesso ao workspace admin**, criada na etapa anterior (**WORKSHOPsec2019##**).
-<br>
+Execute o seu job
 
-   ![Apex Password](images/apex-password.png)
+![scheduler_03](images/scheduler_03.png)
 
-Em seguida, clique na opção **Create Workspace**. Na tela seguinte, escolha a opção **Existing Schema** para continuar com a criação do workspace utilizando um schema já existente.
+Após a conclusão clique na aba de histórico e relatório para ter a visão completa das execuções e também potenciais erros
 
-   ![Existing Schema](images/existing-schema.png)
+![scheduler_04](images/scheduler_04.png)
 
-Na sequência, clique no ícone **(☰)** na tela e selecione **DEMO**. 
-<br>
-Em seguida, preencha o formulário como o exemplo abaixo (recomendamos a senha **WORKSHOPsec2019##**). E clique em **Create Workspace** para finalizar.
+## **3️⃣ Importar e configurar aplicação Select AI**
 
-> **ATENÇÃO**: Verifique se utilizou a senha recomendada **WORKSHOPsec2019##**
+Clique no icone do canto superior esquerdo e selecione APEX, faça o login novamente com o usuário ADMIN e a senha configurada na criação do Autonomous Database
 
-   ![Create Workspace](images/create-workspace.png)
+![apex_link](images/apex_link.png)
 
-Clique na aba superior **Manage Instance** e, em seguida, selecione **Security**.
+Clique no icone create workspace no canto direito da tela e selecione existing schema
 
-   ![Manage Instance](images/manage-instance.png)
+![apex01](images/apex01.png)
 
-Altere o parâmetro **Allow Public File Upload** para **Yes** e clique em **Apply Changes** para salvar as alterações.
+Selecione o schema AI e coloque a senha do ambiente, recomendamos a senha conforme o print screen; Clique em create workspace
 
-   ![File Upload](images/file-upload.png)
+![apex02](images/apex02.png)
 
-Encerre a sessão do usuário **ADMIN** clicando em **Sign Out**, localizado na região superior direita da tela.
+Na parte inferior esquerda da tela, faça o logoff do ambiente
 
-   ![Sign Out](images/sign-out.png)
+![apex03](images/apex03.png)
 
-Faça o login no usuário **DEMO** criado nas etapas anteriores utilizando as credenciais de acesso indicadas abaixo.
+Na tela do login, faça o login com o usuario AI e senha configurada na etapa anterior.
 
-> **ATENÇÃO**: Verifique se utilizou a senha recomendada **WORKSHOPsec2019##**
+Na sequência clique em SQL Workshop e SQL Commands
 
-   ![Login](images/login.png)
+![apex04](images/apex04.png)
 
-Clique em **App Builder** e, em seguida, selecione **Import**.
+Copie e cole o código abaixo (observação: vamos ter que fazer algumas alterações na sessão de create_credential conforme os ids e configurações do seu ambiente)
 
-   ![Import](images/import.png)
+``` sql
+BEGIN
+   DBMS_CLOUD.CREATE_CREDENTIAL (
+       credential_name => 'OBJ_STORE_CRED',
+       user_ocid       => '<USER_OCID>',
+       tenancy_ocid    => '<TENANCY_OCID>',
+       private_key     => '<PRIVATE_KEY_SEM_CABEÇALHO_RODAPÉ>',
+       fingerprint     => '<FINGERPRINT_CHAVE>');
+END;
+/
 
-Na página que será aberta, faça o upload do arquivo **f102.sql**, cujo download está no seguinte link: [f102.sql](https://objectstorage.us-ashburn-1.oraclecloud.com/p/giVj_Pu_1DNcojoKoLWZnEbL2oqQANGFCEGCuIE8Mm1hRaXCMhUkkKdu4xqi9CjB/n/idi1o0a010nx/b/bucket-prodesp/o/f102.sql).
+begin
+   dbms_cloud_ai.create_profile(
+    profile_name => 'OCI_GENAI',
+    attributes   => '{"provider": "oci",
+        "model":"meta.llama-3.3-70b-instruct" ,
+        "credential_name": "OBJ_STORE_CRED",
+        "object_list": [
+            {"owner": "AI"}
+            ],
+        "region": "sa-saopaulo-1",
+        "comments":"true"
+    }'
+   );
+end;
+/   
+```
 
-> **ATENÇÃO:** Caso já tenha sido realizado o download no início do tutorial, não é necessário realizar novamente.
+As informações referentes ao dbms_cloud.create_credential podem ser coletadas a aba de configurações do seu usuário OCI
 
-   ![Aplicação f102](images/f102.png)
+![oci01](images/oci01.png)
 
-Clique em **Next:**
+Na aba de token and keys, crie uma API Key, faça o download da chave privada e clique no canto direito em view configuration file
 
-   ![Import Next](images/import-next.png)
+![oci02](images/oci02.png)
 
-Aceite as configurações padrão e clique em **Install Application** para prosseguir com a instalação.
+Abaixo o exemplo de preenchimento do código que deve ser executado dentro do apex
 
-   ![Install](images/install.png)
+![apex05](images/apex05.png)
 
-Clique em **Install Supporting Objects** para concluir a instalação dos objetos de suporte necessários.
+Agora vamos adicionar comentários à tabela CUSTOMERS_ORDERS para facilitar o uso do Select AI. No APEX clique em sql scripts
 
-   ![Supporting Objects](images/supporting-objects.png)
+![apex07](images/apex07.png)
 
-Por fim, clique na aba **App Builder** para retornar à interface principal de desenvolvimento de aplicações.
+Clique em create e cole o codigo abaixo. Dê o nome de comentarios_tabela e após isso, clique em run
 
-   ![App Builder](images/app-builder.png)
+``` sql
+COMMENT ON TABLE AI.CUSTOMERS_ORDERS IS
+'Tabela de pedidos e perfil de clientes usada para análises, segmentação e geração de consultas em linguagem natural no Select AI.';
 
-## 5️⃣ Configuração de Credenciais para RAG (Retrieval-Augmented Generation)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.CUSTOMER_ID IS
+'Identificador único do cliente.';
 
-Na aba **App Builder**, clique em **Workspace Utilities** para acessar as ferramentas utilitárias do workspace.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.ORDER_ID IS
+'Identificador único do pedido.';
 
-   ![Workspace Utilities](images/workspace-utilities.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.ORDER_DATE IS
+'Data do pedido armazenada como texto.';
 
-Em seguida, selecione **Web Credentials** e clique na credencial existente chamada **apex\_ai\_cred**.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.ORDER_MODE IS
+'Canal ou modo de realização do pedido, como online, loja ou outro canal.';
 
-   ![Web Credentials](images/web-credentials.png)
-   ![Apex AI Cred](images/apex-ai-cred.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.ORDER_STATUS IS
+'Status numérico do pedido.';
 
-Para preencher corretamente essa credencial, é necessário obter algumas informações sobre o usuário no ambiente OCI. Na guia do navegador onde o OCI está aberto, clique no avatar no canto superior direito e selecione **User Settings**.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.ORDER_TOTAL IS
+'Valor total do pedido.';
 
-   ![User Settings](images/user-settings.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.SALES_REP_ID IS
+'Identificador do representante de vendas responsável pelo pedido.';
 
-Na tela **User Settings**, localize a guia **API Keys** no canto inferior esquerdo. Clique nela e siga as instruções do assistente (wizard) para criar um par de chaves de API. 
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.PROMOTION_ID IS
+'Identificador da promoção aplicada ao pedido.';
 
-> **ATENÇÃO: Certifique-se de fazer o download das chaves em um local seguro, pois será necessária para configurar a credencial na próxima etapa. Após o dowload, certifique-se de clicar em ADD para criar a chave**
-> 
-   ![API Keys](images/api-keys.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.WAREHOUSE_ID IS
+'Identificador do armazém ou centro de distribuição responsável pelo pedido.';
 
-O preenchimento do formulário no APEX exigirá informações específicas que podem ser obtidas na tela do OCI. Para facilitar, **utilize as seguintes correspondências de cores** entre os dois sistemas. Preencha as seguintes informações:
-- **OCI User ID** (Coletado no Configuration File Preview)
-- **OCI Public Key Fingerprint** (Coletado no Configuration File Preview)
-- **OCID Tenancy** (Coletado no Configuration File Preview)
-- **OCI Private Key** (Abra o arquivo **.pem** cujo download foi realizado em um bloco de notas e copie o conteúdo)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.DELIVERY_TYPE IS
+'Tipo de entrega selecionado para o pedido.';
 
-Caso você tenha fechado a página com os dados, clique nos **três pontos** em **API Keys** ao lado direito do fingerprint e clique em **View Configuration File**
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.COST_OF_DELIVERY IS
+'Custo de entrega do pedido.';
 
-   ![Config Tenancy](images/config-tenancy.png)
-   ![OCID API APEX](images/ocid-api-apex.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.WAIT_TILL_ALL_AVAILABLE IS
+'Indica se o pedido aguarda todos os itens ficarem disponíveis antes do envio.';
 
-Por fim, clique em **Apply Changes** para salvar as configurações e concluir o ajuste da credencial.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.DELIVERY_ADDRESS_ID IS
+'Identificador do endereço de entrega.';
 
-## 6️⃣ Configuração no Payload da API de Requisição
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.ORDER_CUSTOMER_CLASS IS
+'Classe ou segmento do cliente no contexto do pedido.';
 
-Para concluir este processo, será necessário realizar uma alteração no **payload da API de requisição**.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.CARD_ID IS
+'Identificador do cartão utilizado no pedido.';
 
-Acesse o **App Builder** e clique na aplicação que você instalou recentemente.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.INVOICE_ADDRESS_ID IS
+'Identificador do endereço de cobrança ou faturamento.';
 
-   ![APP Builder API](images/app-builder-api.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.CUST_FIRST_NAME IS
+'Primeiro nome do cliente.';
 
-Selecione em **Shared Components ⮕ REST Data Resources**
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.CUST_LAST_NAME IS
+'Sobrenome do cliente.';
 
-   ![Shared Components](images/shared-components.png)
-   ![Rest Data Resources](images/rest-data-resources.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.NLS_LANGUAGE IS
+'Idioma preferencial do cliente.';
 
-Clique em **cohere-chat** e, em seguida, no **ícone de lápis ao lado do método POST**.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.NLS_TERRITORY IS
+'Território ou região preferencial do cliente.';
 
-   ![Cohere Chat](images/cohere-chat.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.CREDIT_LIMIT IS
+'Limite de crédito do cliente.';
 
-**Altere o Compartment ID para a variável OCI Tenancy ID coletada na etapa 2 deste laboratório.**
-Por fim, clique em **Apply Changes** para salvar as alterações.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.CUST_EMAIL IS
+'Endereço de e-mail do cliente.';
 
-   ![alt text](images/ocid-compartment.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.ACCOUNT_MGR_ID IS
+'Identificador do gerente de conta responsável pelo cliente.';
 
-## 7️⃣ Teste da Aplicação
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.CUSTOMER_SINCE IS
+'Data desde quando o cliente está cadastrado, armazenada como texto.';
 
-Com a configuração da credencial concluída, podemos testar a aplicação. Para isso, clique em **App Builder** e, em seguida, no ícone **Run** para executar a aplicação e verificar seu funcionamento.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.CUSTOMER_CLASS IS
+'Classe ou segmento principal do cliente.';
 
-   ![Run Application](images/run-application.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.SUGGESTIONS IS
+'Sugestões ou recomendações associadas ao cliente.';
 
-Clique no ícone **(☰)** e selecione a aba **Arquivos e Normas**.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.DOB IS
+'Data de nascimento do cliente armazenada como texto.';
 
-   ![Assistente AI](images/assistente-ai.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.MAILSHOT IS
+'Indica se o cliente aceita receber campanhas de marketing por e-mail.';
 
-Seguiremos com o upload de um arquivo PDF para dentro da aplicação. Qualquer PDF pode ser utilizado, mas, para fins didáticos deste workshop utilizaremos como nosso exemplo o guia de [Normas Ambientais da Marinha](https://www.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-401.pdf)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.PARTNER_MAILSHOT IS
+'Indica se o cliente aceita receber campanhas de parceiros.';
 
-<br>
-Clique em **Upload** e preencha o formulário seguindo o exemplo fornecido. O **JSON** utilizado para o preenchimento está disponível logo abaixo da imagem de referência.
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.PREFERRED_ADDRESS IS
+'Identificador do endereço preferido do cliente.';
 
-   ![Uploader](images/uploader.png)
+COMMENT ON COLUMN AI.CUSTOMERS_ORDERS.PREFERRED_CARD IS
+'Identificador do cartão preferido do cliente.';  
+```
 
+Concluido o setup vamos clicar em App builder e import
 
-    <copy>  
-    {
-    "by" : "words",
-    "max" : "200",
-    "overlap" : "0",
-    "split": "sentence",
-    "language" : "ptb",
-    "normalize": "none"
-    }
+![apex06](images/apex06.png)
 
-    </copy>
+Faça o download do arquivo https://raw.githubusercontent.com/caiogusto2/oracleapex/main/SelectAI/selectai.zip e upload para o formulário; Clique next, depois import application, next, install supporting objects e por fim run application
 
-Se o upload for concluído com sucesso, sua tela deverá se assemelhar ao exemplo exibido, mostrando a confirmação do arquivo enviado e os detalhes preenchidos no formulário.
+![apex08](images/apex08.png)
 
-   ![Row Created](images/row-created.png)
+O login será AI e a senha WORKSHOPsec2019##
 
-Clique em Assistente AI e faça uma pergunta relacionada ao documento carregado. 
-<br>
-Por exemplo, você pode perguntar: **COMO TROCAR ÁGUA DE LASTRO?**
+![apex09](images/apex09.png)
 
-   ![Question](images/question.png)
+Selecione o oci_genai e clique no x
 
-**Se não houver erro, você terá concluído com sucesso o workshop.** Sinta-se à vontade para fazer o upload de outros arquivos ou explorar realizando novas perguntas ao Assistente AI.
+![apex10](images/apex10.png)
+
+Pergunte: Qual a quantidade de ordens por delivery_type
+
+![apex11](images/apex11.png)
+
+Outras perguntas que podem ser feitas
+- qual a quantidade de ordens por customer_class
+- quais as ordens efetuadas pelo email alfred.foley@yahoo.com
+- qual a quantidade de ordens por warehouse_id
+
+## **4️⃣ Configurar e testar ORDS**
+
+De volta ao apex, vamos primeiramente configurar o data redaction para a coluna de email da nossa tabela CUSTOMERS_ORDERS. Clique em SQL Commands
+
+![apex12](images/apex12.png)
+
+Copie e cole o comando abaixo
+
+``` sql
+BEGIN
+  DBMS_REDACT.ADD_POLICY(
+    object_schema  => 'AI',
+    object_name    => 'CUSTOMERS_ORDERS',
+    policy_name    => 'REDACT_CUST_EMAIL_ORDS',
+    column_name    => 'CUST_EMAIL',
+    function_type  => DBMS_REDACT.FULL,
+    expression     => 'SYS_CONTEXT(''USERENV'',''MODULE'') = ''/v1/consulta'''
+  );
+END;
+/
+```
+
+Faça um teste e veja que como estamos logado com o usuário AI temos acesso completo ao dataset
+
+``` sql
+select cust_first_name, cust_last_name, cust_email from customers_orders;
+```
+
+![apex13](images/apex13.png)
+
+Agora clique na aba de restfull services
+
+![apex14](images/apex14.png)
+
+Clique em Modules > create module, dê o nome de api e base path v1
+
+![apex15](images/apex15.png)
+
+Na sequencia clique em create template e na uri template escreva consulta
+
+![apex16](images/apex16.png)
+
+Na sequencia, crie um handler e no source coloque 
+
+``` sql
+select cust_first_name, cust_last_name, cust_email from customers_orders
+```
+
+![apex17](images/apex17.png)
+
+Copie e cole a URL no web browser, seus dados aparecerão, contudo o email estará nulo por conta da regra de redaction
+
+![apex18](images/apex18.png)
+
+## **✅ Laboratório finalizado!**
+
+Parabéns! Você concluiu o Hands On do **Oracle Autonomous**, aprendeu a utilizar as tabelas carregadas pelo AI Data platform para orquestrar e realizar outras diferentes transformações usando procedures e scheduler, importou e configurou uma aplicação APEX que demonstra o uso do Select AI e por fim criou um endpoint REST com uma regra de redaction.
+
 
 ## 👥 Agradecimentos
 
 - **Autores** - Caio Oliveira
-- **Autores Contribuintes** - Isabelle Anjos, Gabriela Miyazima, Aristotelles Serra
-- **Última Atualização Por/Data** - Janeiro 2025
+- **Autores Contribuintes** - Isabelle Anjos
+- **Última Atualização Por/Data** - Agosto 2026
 
 ## 🛡️ Declaração de Porto Seguro (Safe Harbor)
 
