@@ -344,7 +344,7 @@ Concluido o setup vamos clicar em App builder e import
 
 ![apex06](images/apex06.png)
 
-Faça o download do arquivo https://raw.githubusercontent.com/caiogusto2/oracleapex/main/SelectAI/selectai.zip e upload para o formulário; Clique next, depois import application, next, install supporting objects e por fim run application
+Faça o download do arquivo https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/autonomousdb/app_apex/selectai.zip e upload para o formulário; Clique next, depois import application, next, install supporting objects e por fim run application
 
 ![apex08](images/apex08.png)
 
