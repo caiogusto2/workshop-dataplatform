@@ -219,7 +219,9 @@ Antes de iniciar, recomenda-se possuir:
 
 ## ▶️ Como executar o workshop
 
-### 1. Acessa esse github como página web: https://caiogusto2.github.io/workshop-dataplatform
+### 1. Acessa o conteudo
+
+Acesse esse github como página web: https://caiogusto2.github.io/workshop-dataplatform
 
 ### 2. Prepare o ambiente
 
