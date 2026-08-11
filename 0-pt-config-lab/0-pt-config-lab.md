@@ -73,7 +73,7 @@ Selecione as opções indicadas abaixo:
      - Selecione a opção **Individual**.
 
 - **Home Region**:
-    - **Selecione a opção "US Midwest (Chicago)"** como a região de origem. 
+    - **Selecione a opção "Brazil East (Sao Paulo)"** como a região de origem. 
 
 - **Confirmação da Região**:
     - Marque a caixa de seleção para confirmar que entende que a **região de origem** não pode ser modificada após este passo.
