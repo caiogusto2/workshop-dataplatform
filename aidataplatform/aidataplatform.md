@@ -116,7 +116,7 @@ os.makedirs(tmp_dir, exist_ok=True)
 
 orders_file = os.path.join(tmp_dir, "orders.csv")
 customers_file = os.path.join(tmp_dir, "customers.csv")
-politica_trocas_file = os.path.join(tmp_dir, "customers.csv")
+politica_trocas_file = os.path.join(tmp_dir, "politica_trocas.pdf")
 
 urllib.request.urlretrieve(orders_url, orders_file)
 urllib.request.urlretrieve(customers_url, customers_file)
