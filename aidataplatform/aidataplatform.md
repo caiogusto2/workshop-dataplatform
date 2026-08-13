@@ -2,7 +2,7 @@
 
 ## 🎯 **Objetivos**
 
-Descobrir como utilizar de forma prática o serviço OCI AI Data Platform, criando um pipeline de ponta a ponta, importando e trabalhando com arquivos CSV, realizando transformações, criando a estrutura medalhão e disponibilizando os resultados finais em um Autonomous Database. 
+Descobrir como utilizar de forma prática o serviço OCI AI Data Platform, criando um pipeline de ponta a ponta, importando e trabalhando com arquivos CSV, realizando transformações, criando a estrutura medalhão, criando agents e disponibilizando os resultados finais em um Autonomous Database. 
 
 O que você aprenderá:
 
@@ -13,12 +13,13 @@ O que você aprenderá:
 - Criar as camadas da arquitetura medalhão com PySpark.
 - Replicar datasets já processados para o Autonomous Database.
 - Orquestrar notebooks sequencialmente por meio de Workflow.
+- Criar e configurar agents
 
 ### _**Aproveite sua experiência na Oracle Cloud!**_
 
 ## 📌 Introdução
 
-> **O laboratório implementa um pipeline de dados em camadas. O processamento é realizado no OCI AI Data Platform com notebooks e Spark. Neste workshop, trabalharemos um dataset CSV, processaremos os dados usando o AIDP e, por fim, disponibilizaremos os dados em um Autonomous Database na OCI.** 
+> **O laboratório implementa um pipeline de dados em camadas. O processamento é realizado no OCI AI Data Platform com notebooks e Spark. Neste workshop, trabalharemos um dataset CSV, processaremos os dados usando o AIDP e, por fim, disponibilizaremos os dados em um Autonomous Database na OCI e criaremos um agent simples.** 
 
 # **Parte 1 - Hands On AI Data Platform**
 
@@ -107,6 +108,7 @@ import urllib.request
 
 orders_url = "https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/aidataplatform/arquivos_csv/orders.csv"
 customers_url = "https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/aidataplatform/arquivos_csv/customers.csv"
+politica_trocas_url = "https://raw.githubusercontent.com/caiogusto2/workshop-dataplatform/main/aidataplatform/arquivos_rag/politica_trocas.pdf"
 
 # Substitua pelo caminho do volume criado no catálogo
 tmp_dir = "/Volumes/demo/default/vol01"
@@ -114,9 +116,11 @@ os.makedirs(tmp_dir, exist_ok=True)
 
 orders_file = os.path.join(tmp_dir, "orders.csv")
 customers_file = os.path.join(tmp_dir, "customers.csv")
+politica_trocas_file = os.path.join(tmp_dir, "customers.csv")
 
 urllib.request.urlretrieve(orders_url, orders_file)
 urllib.request.urlretrieve(customers_url, customers_file)
+urllib.request.urlretrieve(politica_trocas_url, politica_trocas_file)
 
 df_orders = (
     spark.read
@@ -432,11 +436,85 @@ Caso haja interesse em agendar a execução do workflow, isso pode ser feito na 
 
 ![workflow04](images/workflow04.png)
 
+## **7️⃣ Criação de Agents**
+
+Uma vez que tenhamos os datasets populados dentro do AIDP conseguimos criar facilmente agents. Nosso agent terá o objetivo de responder perguntas sobre os clientes da base processada e nossa politica de devolução de produtos.
+
+Primeiramente vamos criar a nossa knowledge base. No canto esquerdo clique em Master Catalog e no catalogo demo
+
+![cat01](images/cat01.png)
+
+Na sequencia clique em default, knowledge bases, no botão de + proximo ao buscador e faça a criação da knowledge bases
+
+![cat02](images/cat02.png)
+
+Dentro da knowledge base pdf01, clique no botão de + (proximo ao filtro) e adicione o vol01 como a imagem abaixo
+
+![cat03](images/cat03.png)
+
+Feita a etapa do knowledge base, vamos seguir com a criação do agent. Clique no canto esquerdo (dentro do seu workspace) em agents e depois no botão de + próximo ao campo de filtro
+
+![agent01](images/agent01.png)
+
+Dê o nome de agent01 e clique em criar
+
+![agent02](images/agent02.png)
+
+Arraste o componente Chat trigger e executor agent para dentro da tela. Alem disso arraste também as tools de sql e rag para dentro da tela; Monte as conexões entre os componentes e deixe-os da segunite forma
+
+![agent03](images/agent03.png)
+
+Clique no agent (icone verde) e configure da seguinte forma
+
+![agent04](images/agent04.png)
+
+Clique em sql_1 (icone marrom) e configure da seguinte forma
+
+![agent05](images/agent05.png)
+
+``` sql
+select CUST_EMAIL, CUST_FIRST_NAME, CUSTOMER_ID, ORDER_MODE, ORDER_ID, DELIVERY_TYPE from demo.silver.customers_orders WHERE CUSTOMER_ID = {{id}}
+```
+
+Clique em rag_1 (icone roxo) e configure da seguinte forma
+
+![agent06](images/agent06.png)
+
+Finalizado o setup, clique no icone playground na parte superior da tela
+
+![agent07](images/agent07.png)
+
+No canto superior direito, clique em Create a new AI Compute e depois Attach to AI Compute
+
+![agent08](images/agent08.png)
+
+No canto inferior esquerdo digite as perguntas de teste do nosso agent:
+- quais são as formas de reembolso para meu pedido?
+- qual o email para o usuario com id 749998?
+
+![agent09](images/agent09.png)
+
+Agora clique no canto superior direito em deploy
+
+![agent10](images/agent10.png)
+
+Uma vez terminado o deploy clique em details e teremos as URLs de integação
+
+![agent11](images/agent11.png)
+
+Em sessions conseguimos ver as sessões ativas e uso de tokens
+
+![agent12](images/agent12.png)
+
+E clicando em métricas conseguimos ter um overview do ambiente como um todo
+
+![agent13](images/agent13.png)
+
 ------------------------------------------------------------------------
 
 ## **✅ Laboratório finalizado!**
 
-Parabéns! Você concluiu o hands-on do **OCI AI Data Platform (AIDP)**, construindo as camadas **Bronze**, **Silver** e **Gold** e orquestrando as atividades por meio de um **Workflow**.
+Parabéns! Você concluiu o hands-on do **OCI AI Data Platform (AIDP)**, construindo as camadas **Bronze**, **Silver** e **Gold**, orquestrando as atividades por meio de um **Workflow** e criando um agent simples sobre os dados processados.
 
 
 ## 👥 Agradecimentos
