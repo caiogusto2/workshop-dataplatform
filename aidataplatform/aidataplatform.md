@@ -440,7 +440,11 @@ Caso haja interesse em agendar a execução do workflow, isso pode ser feito na 
 
 Uma vez que tenhamos os datasets populados dentro do AIDP conseguimos criar facilmente agents. Nosso agent terá o objetivo de responder perguntas sobre os clientes da base processada e nossa politica de devolução de produtos.
 
-Primeiramente vamos criar a nossa knowledge base. No canto esquerdo clique em Master Catalog e no catalogo demo
+Primeiramente vamos habilitar o uso dos agents dentro da nossa instância AIDP. Clique na home do AIDP no canto esquerdo e na tela enable AI Features, utilize o banco de dados criado anteriormente para habilitação da funcionalidade
+
+![ajuste01](images/ajuste01.png)
+
+vamos criar a nossa knowledge base. No canto esquerdo clique em Master Catalog e no catalogo demo
 
 ![cat01](images/cat01.png)
 
