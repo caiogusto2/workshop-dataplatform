@@ -464,6 +464,10 @@ Dê o nome de agent01 e clique em criar
 
 ![agent02](images/agent02.png)
 
+No canto superior direito, clique em Create a new AI Compute, deixe rodando a criação e dê sequência ao workshop
+
+![agent08](images/agent08.png)
+
 Arraste o componente Chat trigger e executor agent para dentro da tela. Alem disso arraste também as tools de sql e rag para dentro da tela; Monte as conexões entre os componentes e deixe-os da segunite forma
 
 ![agent03](images/agent03.png)
@@ -472,7 +476,7 @@ Clique no agent (icone verde) e configure da seguinte forma
 
 ![agent04](images/agent04.png)
 
-Clique em sql_1 (icone marrom) e configure da seguinte forma
+Clique em sql_1 (icone marrom) e configure da seguinte forma (query abaixo do print)
 
 ![agent05](images/agent05.png)
 
@@ -484,11 +488,7 @@ Clique em rag_1 (icone roxo) e configure da seguinte forma
 
 ![agent06](images/agent06.png)
 
-No canto superior direito, clique em Create a new AI Compute e depois Attach to AI Compute
-
-![agent08](images/agent08.png)
-
-Finalizado o setup, clique no icone playground na parte superior da tela
+Finalizado o setup, faça o attach do AI Compute e clique no icone playground na parte superior da tela
 
 ![agent07](images/agent07.png)
 
