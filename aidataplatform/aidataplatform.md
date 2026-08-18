@@ -484,13 +484,13 @@ Clique em rag_1 (icone roxo) e configure da seguinte forma
 
 ![agent06](images/agent06.png)
 
-Finalizado o setup, clique no icone playground na parte superior da tela
-
-![agent07](images/agent07.png)
-
 No canto superior direito, clique em Create a new AI Compute e depois Attach to AI Compute
 
 ![agent08](images/agent08.png)
+
+Finalizado o setup, clique no icone playground na parte superior da tela
+
+![agent07](images/agent07.png)
 
 No canto inferior esquerdo digite as perguntas de teste do nosso agent:
 - quais são as formas de reembolso para meu pedido?
