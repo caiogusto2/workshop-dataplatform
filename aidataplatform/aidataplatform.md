@@ -363,7 +363,7 @@ spark.table("demo.gold.customer_class_agg_review").show(truncate=False)
 
 ## **5️⃣ Escrita no Autonomous Database**
 
-Por fim, vamos replicar e escrever as tabelas `demo.silver.customers_orders` e `demo.gold.customer_class_agg_review` no Autonomous Database mapeado anteriormente. Outros exemplos podem ser encontrados na página https://github.com/oracle-samples/oracle-aidp-samples/tree/main.
+Por fim, vamos replicar e escrever as tabelas `demo.silver.customers_orders` e `demo.gold.customer_class_agg_review` no Autonomous Database mapeado anteriormente. Outros exemplos podem ser encontrados na página https://github.com/oracle-samples/oracle-aidp-samples/tree/main
 
 Crie um novo notebook e dê o nome de **notebook_adb**; copie e cole o código abaixo.
 
